@@ -107,6 +107,11 @@ export const Distributor: React.FC = () => {
           date: new Date().toLocaleString()
         };
         localStorage.setItem('musa_distributors', JSON.stringify([...existingInquiries, newInquiry]));
+
+        // Direct submission to Gmail address
+        const subject = encodeURIComponent(`Wholesale Application: ${formData.businessName}`);
+        const body = encodeURIComponent(`Full Name: ${formData.fullName}\nBusiness Name: ${formData.businessName}\nCity: ${formData.city}\nPhone: ${formData.phone}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`);
+        window.location.href = `mailto:musasodawater@gmail.com?subject=${subject}&body=${body}`;
       }, 1200);
     }
   };
@@ -201,8 +206,8 @@ export const Distributor: React.FC = () => {
                     Submit Another Inquiry
                   </button>
                   <a
-                    href={`mailto:partners@musasodawater.com?subject=Wholesale Application: ${formData.businessName}&body=Full Name: ${formData.fullName}%0ACity: ${formData.city}%0APhone: ${formData.phone}%0AMessage: ${formData.message}`}
-                    className="bg-gradient-to-r from-[#2dd4ff] to-[#46f08a] text-black text-xs font-bold rounded-lg px-6 py-2.5 flex items-center justify-center transition shadow-lg hover:shadow-cyan-400/15"
+                    href={`mailto:musasodawater@gmail.com?subject=Wholesale Application: ${encodeURIComponent(formData.businessName)}&body=Full Name: ${encodeURIComponent(formData.fullName)}%0ACity: ${encodeURIComponent(formData.city)}%0APhone: ${encodeURIComponent(formData.phone)}%0AMessage: ${encodeURIComponent(formData.message)}`}
+                    className="bg-gradient-to-r from-[#2dd4ff] to-[#46f08a] text-[#050a12] text-xs font-bold rounded-lg px-6 py-2.5 flex items-center justify-center transition shadow-lg hover:shadow-cyan-400/15"
                   >
                     Open Mail Fallback
                   </a>

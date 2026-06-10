@@ -57,6 +57,11 @@ export const Contact: React.FC = () => {
           date: new Date().toLocaleString()
         };
         localStorage.setItem('musa_contact_messages', JSON.stringify([...existingMessages, newMessage]));
+
+        // Direct submission to Gmail key-address
+        const subject = encodeURIComponent(`MUSA Contact: ${formData.subject}`);
+        const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}`);
+        window.location.href = `mailto:musasodawater@gmail.com?subject=${subject}&body=${body}`;
       }, 1200);
     }
   };
@@ -127,8 +132,8 @@ export const Contact: React.FC = () => {
                   <h4 className="font-bold text-white uppercase tracking-wider text-xs">Email Correspondence</h4>
                   <p className="text-[10px] text-gray-500 font-mono mt-0.5">DIRECT CHANNELS</p>
                   <p className="text-gray-400 text-xs mt-1">
-                    General: <a href="mailto:contact@musasodawater.com" className="hover:text-[#2dd4ff] underline">contact@musasodawater.com</a><br />
-                    Partners: <a href="mailto:partners@musasodawater.com" className="hover:text-[#2dd4ff] underline">partners@musasodawater.com</a>
+                    General Intake: <a href="mailto:musasodawater@gmail.com" className="hover:text-[#2dd4ff] underline">musasodawater@gmail.com</a><br />
+                    Partnerships: <a href="mailto:musasodawater@gmail.com" className="hover:text-[#2dd4ff] underline">musasodawater@gmail.com</a>
                   </p>
                 </div>
               </div>
@@ -218,8 +223,8 @@ export const Contact: React.FC = () => {
                     Send Another Message
                   </button>
                   <a
-                    href={`mailto:contact@musasodawater.com?subject=${formData.subject}&body=Hello MUSA Team,%0A%0A${formData.message}%0A%0ARegards,%0A${formData.name}`}
-                    className="bg-gradient-to-r from-[#2dd4ff] to-[#46f08a] text-black text-xs font-bold rounded-lg px-6 py-2.5 flex items-center justify-center transition shadow-lg"
+                    href={`mailto:musasodawater@gmail.com?subject=${encodeURIComponent(formData.subject)}&body=Hello MUSA Team,%0A%0A${encodeURIComponent(formData.message)}%0A%0ARegards,%0A${encodeURIComponent(formData.name)}`}
+                    className="bg-gradient-to-r from-[#2dd4ff] to-[#46f08a] text-[#050a12] text-xs font-bold rounded-lg px-6 py-2.5 flex items-center justify-center transition shadow-lg"
                   >
                     Standard Mail Backup
                   </a>
