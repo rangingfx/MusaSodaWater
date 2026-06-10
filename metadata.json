@@ -1,0 +1,6 @@
+{
+  "name": "MUSA Soda Water",
+  "description": "Premium sparkling soda water from Bannu, KPK, Pakistan. Refreshing, pure, and energetic flavors.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
