@@ -3,12 +3,16 @@ import { motion } from 'motion/react';
 import { Sparkles, ArrowRight, ShieldCheck, Award, Flame, FlameKindling, Globe, Calendar, Clock, ArrowRightCircle, Play, Pause, Volume2, VolumeX, Tv, Maximize2, Eye, Layers } from 'lucide-react';
 import { PRODUCTS } from '../data/products';
 import { BLOG_POSTS } from '../data/blog';
+import { MusaBottle } from './MusaBottle';
+import { TRANSLATIONS } from '../data/translations';
 
 interface HomeProps {
   onNavigate: (path: string) => void;
+  language?: 'en' | 'ur';
 }
 
-export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
+export const Home: React.FC<HomeProps> = ({ onNavigate, language = 'en' }) => {
+  const t = TRANSLATIONS[language];
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   
   // States for the interactive brand cinema commercial
@@ -16,6 +20,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [activeScene, setActiveScene] = useState<number>(0);
   const [progress, setProgress] = useState<number>(35);
+  const [hoveredFlavor, setHoveredFlavor] = useState<string | null>(null);
 
   // Sparkle / Bubble Rising Animation behind Hero
   useEffect(() => {
@@ -107,7 +112,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               <div className="inline-flex items-center space-x-2 bg-[#46f08a]/10 border border-[#46f08a]/20 rounded-full px-4 py-1.5 shadow-md">
                 <Sparkles className="h-4 w-4 text-[#2dd4ff]" />
                 <span className="text-[11px] uppercase tracking-[0.2em] font-bold text-[#46f08a] font-mono">
-                  Pride of Bannu • Since 2020
+                  {language === 'ur' ? 'بنوں کا فخر • 2020 سے قائم شدہ' : 'Pride of Bannu • Since 2020'}
                 </span>
               </div>
 
@@ -118,27 +123,27 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                   transition={{ duration: 0.6 }}
                   className="text-6xl sm:text-8xl xl:text-[105px] leading-[0.85] font-black italic uppercase tracking-tighter"
                 >
-                  Pure<br/>
+                  {t.heroHeadingLine1}<br/>
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2dd4ff] to-[#46f08a]">
-                    Sparkling
+                    {t.heroHeadingLine2}
                   </span>
                 </motion.h1>
 
-                <p className="text-white/60 text-lg sm:text-xl font-sans font-light max-w-2xl leading-relaxed">
-                  Experience the premium refreshing taste of Bannu’s finest soda water. Hand-crafted using pure mountain reserves for crisp, cold, and consistently high carbonation.
+                <p className="text-white/60 text-lg sm:text-xl font-sans font-light max-w-2xl leading-relaxed select-text">
+                  {t.heroText}
                 </p>
               </div>
 
               {/* Tagline list */}
               <div className="flex flex-wrap gap-y-2 gap-x-6 text-xs tracking-[0.2em] font-black uppercase text-white/50">
                 <span className="flex items-center">
-                  <span className="w-1.5 h-1.5 bg-[#2dd4ff] rounded-full mr-2" /> PURE
+                  <span className="w-1.5 h-1.5 bg-[#2dd4ff] rounded-full mr-2" /> {language === 'ur' ? 'خالص' : 'PURE'}
                 </span>
                 <span className="flex items-center">
-                  <span className="w-1.5 h-1.5 bg-[#46f08a] rounded-full mr-2" /> SPARKLING
+                  <span className="w-1.5 h-1.5 bg-[#46f08a] rounded-full mr-2" /> {language === 'ur' ? 'اسپارکلنگ' : 'SPARKLING'}
                 </span>
                 <span className="flex items-center">
-                  <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full mr-2" /> REFRESHING
+                  <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full mr-2" /> {language === 'ur' ? 'تازہ دم' : 'REFRESHING'}
                 </span>
               </div>
 
@@ -149,14 +154,14 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('products')}
                   className="px-8 py-4 bg-white text-black font-extrabold uppercase tracking-widest text-xs rounded-full hover:bg-[#2dd4ff] hover:text-black hover:shadow-lg hover:shadow-[#2dd4ff]/20 transform hover:-translate-y-0.5 transition-all duration-300 cursor-pointer font-display"
                 >
-                  Explore Flavors
+                  {t.exploreFlavors}
                 </button>
                 <button
                   id="hero-distributor"
                   onClick={() => onNavigate('distributor')}
                   className="px-8 py-4 border border-white/20 text-white font-extrabold uppercase tracking-widest text-xs rounded-full hover:bg-white/10 transition-all cursor-pointer font-display"
                 >
-                  Wholesale Inquiry
+                  {language === 'ur' ? 'ہول سیل انکوائری' : 'Wholesale Inquiry'}
                 </button>
               </div>
             </div>
@@ -626,68 +631,297 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* 3) Flavors Preview (Editorial High-Contrast Strip Section) */}
-      <section id="flavors-preview" className="bg-white text-black py-16 px-4 md:px-12 flex flex-col md:flex-row items-stretch gap-8 border-y border-black/10">
-        <div className="w-full md:w-1/4 pr-0 md:pr-8 md:border-r border-black/15 flex flex-col justify-center text-left">
-          <span className="text-[10px] uppercase tracking-[0.25em] font-bold text-gray-400 mb-1">Curated Blends</span>
-          <h3 className="text-2xl font-black uppercase italic tracking-tighter mb-3">Flavor Gallery</h3>
-          <p className="text-sm text-black/60 leading-relaxed italic pr-2 font-sans font-light">
-            Hand-crafted, cold-carbonated recipes manufactured with pure regional mineral sources in Bannu, KPK.
-          </p>
-        </div>
-        
-        <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-0 md:px-6">
-          {/* Flavor Card: Mint */}
-          <div 
-            onClick={() => onNavigate('products?id=mint')}
-            className="group cursor-pointer text-left flex flex-col justify-between py-2"
-          >
-            <div>
-              <div className="h-1 w-full bg-[#46F08A] mb-4 group-hover:h-3 transition-all duration-300"></div>
-              <h4 className="text-xl font-black uppercase italic tracking-tight group-hover:text-[#46F08A] transition-colors">Mint</h4>
-              <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-black/40 mt-1">Cooling & Herbal</p>
-            </div>
-            <span className="text-xxs font-mono text-black/30 mt-6 block group-hover:text-black/60 transition-colors uppercase tracking-widest">Explore Flavor →</span>
+      {/* 3) Our Natural Flavors (Premium High-Contrast Showcase Section) */}
+      <section id="flavors-preview" className="bg-[#03070e] text-white py-24 px-4 sm:px-6 lg:px-8 border-y border-gray-950 relative overflow-hidden text-left">
+        {/* Background glow highlights */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(70,240,138,0.03),transparent_50%)] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-cyan-950/20 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          
+          {/* Header Layout conforming to professional brand patterns */}
+          <div className="text-center max-w-3xl mx-auto mb-20 space-y-4 select-text">
+            <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#46f08a] font-mono bg-[#46f08a]/10 border border-[#46f08a]/20 px-4 py-1.5 rounded-full inline-block">
+              OUR NATURAL FLAVORS
+            </span>
+            <h2 className="text-4xl sm:text-6xl font-black font-display uppercase italic tracking-tighter text-white">
+              Sip Authentic Freshness
+            </h2>
+            <p className="text-gray-400 text-sm sm:text-base leading-relaxed font-sans font-light">
+              Experience the perfect harmony of pristine local water reserves, high-impact micro-carbonation, and natural botanical extracts. Zero artificial syrups, just absolute KPK refreshment.
+            </p>
           </div>
 
-          {/* Flavor Card: Lemon */}
-          <div 
-            onClick={() => onNavigate('products?id=lemon')}
-            className="group cursor-pointer text-left flex flex-col justify-between py-2"
-          >
-            <div>
-              <div className="h-1 w-full bg-[#F6E05E] mb-4 group-hover:h-3 transition-all duration-300"></div>
-              <h4 className="text-xl font-black uppercase italic tracking-tight group-hover:text-yellow-600 transition-colors">Lemon</h4>
-              <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-black/40 mt-1">Zesty & Sharp</p>
+          {/* Fully Responsive Grid System: Desktop (4 Columns), Tablet (2 Columns), Mobile (1 Column) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            
+            {/* 1. MINT FLAVOR CARD */}
+            <div
+              id="flavor-card-mint"
+              className="bg-[#070e17] border border-gray-900 rounded-3xl p-6 flex flex-col justify-between h-full relative overflow-hidden shadow-2xl transition-all duration-500 hover:border-[#10b981]/40 hover:shadow-[#10b981]/5 hover:bg-[#091523] group"
+              onMouseEnter={() => setHoveredFlavor('mint')}
+              onMouseLeave={() => setHoveredFlavor(null)}
+              onClick={() => onNavigate('products?id=mint')}
+            >
+              {/* Product Size and Category badges */}
+              <div className="flex items-center justify-between mb-4 relative z-20">
+                <span className="text-[9px] font-mono font-bold tracking-widest text-[#10b981] bg-[#10b981]/15 px-2.5 py-1 rounded border border-[#10b981]/20">
+                  300ML PET BOTTLE
+                </span>
+                <span className="text-[10px] text-gray-500 font-mono font-bold uppercase">🌿 Mint</span>
+              </div>
+
+              {/* Central Premium 3D Bottle Showcase with floating motion */}
+              <div className="h-80 flex items-center justify-center relative mb-6">
+                <div className="absolute w-36 h-36 bg-[#10b981]/10 rounded-full blur-3xl opacity-60 pointer-events-none" />
+                <motion.div
+                  animate={{ y: [0, -7, 0] }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 3.8,
+                    ease: "easeInOut"
+                  }}
+                  className="z-10"
+                >
+                  <MusaBottle flavor="mint" isHovered={hoveredFlavor === 'mint'} />
+                </motion.div>
+              </div>
+
+              {/* Flavor text info and description detail inside card */}
+              <div className="space-y-3 mt-auto relative z-20">
+                <div className="flex items-baseline justify-between select-text">
+                  <h3 className="text-2xl font-black italic uppercase tracking-tight text-white group-hover:text-[#10b981] transition-colors">
+                    Mint
+                  </h3>
+                  <span className="text-[10px] font-mono text-gray-500 uppercase">Ingredients Approved</span>
+                </div>
+                
+                <p className="text-sm text-gray-450 leading-relaxed font-sans font-light select-text">
+                  Refreshing natural mint flavor with a cool and crisp finish.
+                </p>
+
+                <div className="pt-3 border-t border-gray-900/60 flex items-center justify-between">
+                  <span className="text-xxs font-mono uppercase tracking-widest text-gray-500 group-hover:text-white transition-colors">
+                    View Specs & Nutrition →
+                  </span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onNavigate('products?id=mint');
+                    }}
+                    className="px-4 py-2 border border-gray-800 hover:bg-[#10b981] hover:text-black hover:border-transparent text-white font-bold text-[9px] uppercase tracking-widest rounded transition-all cursor-pointer"
+                  >
+                    View Details
+                  </button>
+                </div>
+              </div>
             </div>
-            <span className="text-xxs font-mono text-black/30 mt-6 block group-hover:text-black/60 transition-colors uppercase tracking-widest">Explore Flavor →</span>
+
+            {/* 2. LEMON FLAVOR CARD */}
+            <div
+              id="flavor-card-lemon"
+              className="bg-[#070e17] border border-gray-900 rounded-3xl p-6 flex flex-col justify-between h-full relative overflow-hidden shadow-2xl transition-all duration-500 hover:border-[#eab308]/40 hover:shadow-[#eab308]/5 hover:bg-[#141822] group"
+              onMouseEnter={() => setHoveredFlavor('lemon')}
+              onMouseLeave={() => setHoveredFlavor(null)}
+              onClick={() => onNavigate('products?id=lemon')}
+            >
+              {/* Product Size and Category badges */}
+              <div className="flex items-center justify-between mb-4 relative z-20">
+                <span className="text-[9px] font-mono font-bold tracking-widest text-[#eab308] bg-[#eab308]/15 px-2.5 py-1 rounded border border-[#eab308]/20">
+                  300ML PET BOTTLE
+                </span>
+                <span className="text-[10px] text-gray-500 font-mono font-bold uppercase">🍋 Lemon</span>
+              </div>
+
+              {/* Central Premium 3D Bottle Showcase with floating motion */}
+              <div className="h-80 flex items-center justify-center relative mb-6">
+                <div className="absolute w-36 h-36 bg-[#eab308]/10 rounded-full blur-3xl opacity-60 pointer-events-none" />
+                <motion.div
+                  animate={{ y: [0, -7, 0] }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 4.2,
+                    ease: "easeInOut"
+                  }}
+                  className="z-10"
+                >
+                  <MusaBottle flavor="lemon" isHovered={hoveredFlavor === 'lemon'} />
+                </motion.div>
+              </div>
+
+              {/* Flavor text info and description detail inside card */}
+              <div className="space-y-3 mt-auto relative z-20">
+                <div className="flex items-baseline justify-between select-text">
+                  <h3 className="text-2xl font-black italic uppercase tracking-tight text-white group-hover:text-[#eab308] transition-colors">
+                    Lemon
+                  </h3>
+                  <span className="text-[10px] font-mono text-gray-500 uppercase">Organic Citrus Oils</span>
+                </div>
+                
+                <p className="text-sm text-gray-450 leading-relaxed font-sans font-light select-text">
+                  Sparkling lemon freshness with a vibrant citrus taste.
+                </p>
+
+                <div className="pt-3 border-t border-gray-900/60 flex items-center justify-between">
+                  <span className="text-xxs font-mono uppercase tracking-widest text-gray-500 group-hover:text-white transition-colors">
+                    View Specs & Nutrition →
+                  </span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onNavigate('products?id=lemon');
+                    }}
+                    className="px-4 py-2 border border-gray-800 hover:bg-[#eab308] hover:text-black hover:border-transparent text-white font-bold text-[9px] uppercase tracking-widest rounded transition-all cursor-pointer"
+                  >
+                    View Details
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* 3. IMLI (TAMARIND) FLAVOR CARD */}
+            <div
+              id="flavor-card-imli"
+              className="bg-[#070e17] border border-gray-900 rounded-3xl p-6 flex flex-col justify-between h-full relative overflow-hidden shadow-2xl transition-all duration-500 hover:border-[#f97316]/40 hover:shadow-[#f97316]/5 hover:bg-[#12111d] group"
+              onMouseEnter={() => setHoveredFlavor('imli')}
+              onMouseLeave={() => setHoveredFlavor(null)}
+              onClick={() => onNavigate('products?id=imli')}
+            >
+              {/* Product Size and Category badges */}
+              <div className="flex items-center justify-between mb-4 relative z-20">
+                <span className="text-[9px] font-mono font-bold tracking-widest text-[#f97316] bg-[#f97316]/15 px-2.5 py-1 rounded border border-[#f97316]/20">
+                  300ML PET BOTTLE
+                </span>
+                <span className="text-[10px] text-gray-500 font-mono font-bold uppercase">🌰 Imli</span>
+              </div>
+
+              {/* Central Premium 3D Bottle Showcase with floating motion */}
+              <div className="h-80 flex items-center justify-center relative mb-6">
+                <div className="absolute w-36 h-36 bg-[#f97316]/10 rounded-full blur-3xl opacity-60 pointer-events-none" />
+                <motion.div
+                  animate={{ y: [0, -7, 0] }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 4.5,
+                    ease: "easeInOut"
+                  }}
+                  className="z-10"
+                >
+                  <MusaBottle flavor="imli" isHovered={hoveredFlavor === 'imli'} />
+                </motion.div>
+              </div>
+
+              {/* Flavor text info and description detail inside card */}
+              <div className="space-y-3 mt-auto relative z-20">
+                <div className="flex items-baseline justify-between select-text">
+                  <h3 className="text-2xl font-black italic uppercase tracking-tight text-white group-hover:text-[#f97316] transition-colors">
+                    Imli
+                  </h3>
+                  <span className="text-[10px] font-mono text-gray-500 uppercase">Heritage Recipe</span>
+                </div>
+                
+                <p className="text-sm text-gray-450 leading-relaxed font-sans font-light select-text">
+                  Traditional tangy tamarind flavor inspired by local preferences.
+                </p>
+
+                <div className="pt-3 border-t border-gray-900/60 flex items-center justify-between">
+                  <span className="text-xxs font-mono uppercase tracking-widest text-gray-500 group-hover:text-white transition-colors">
+                    View Specs & Nutrition →
+                  </span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onNavigate('products?id=imli');
+                    }}
+                    className="px-4 py-2 border border-gray-800 hover:bg-[#f97316] hover:text-black hover:border-transparent text-white font-bold text-[9px] uppercase tracking-widest rounded transition-all cursor-pointer"
+                  >
+                    View Details
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* 4. BLUEBERRY FLAVOR CARD */}
+            <div
+              id="flavor-card-blueberry"
+              className="bg-[#070e17] border border-gray-900 rounded-3xl p-6 flex flex-col justify-between h-full relative overflow-hidden shadow-2xl transition-all duration-500 hover:border-[#6366f1]/40 hover:shadow-[#6366f1]/5 hover:bg-[#0c1024] group"
+              onMouseEnter={() => setHoveredFlavor('blueberry')}
+              onMouseLeave={() => setHoveredFlavor(null)}
+              onClick={() => onNavigate('products?id=blueberry')}
+            >
+              {/* Product Size and Category badges */}
+              <div className="flex items-center justify-between mb-4 relative z-20">
+                <span className="text-[9px] font-mono font-bold tracking-widest text-[#6366f1] bg-[#6366f1]/15 px-2.5 py-1 rounded border border-[#6366f1]/20">
+                  300ML PET BOTTLE
+                </span>
+                <span className="text-[10px] text-gray-500 font-mono font-bold uppercase">🫐 Blueberry</span>
+              </div>
+
+              {/* Central Premium 3D Bottle Showcase with floating motion */}
+              <div className="h-80 flex items-center justify-center relative mb-6">
+                <div className="absolute w-36 h-36 bg-[#6366f1]/10 rounded-full blur-3xl opacity-60 pointer-events-none" />
+                <motion.div
+                  animate={{ y: [0, -7, 0] }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 4.8,
+                    ease: "easeInOut"
+                  }}
+                  className="z-10"
+                >
+                  <MusaBottle flavor="blueberry" isHovered={hoveredFlavor === 'blueberry'} />
+                </motion.div>
+              </div>
+
+              {/* Flavor text info and description detail inside card */}
+              <div className="space-y-3 mt-auto relative z-20">
+                <div className="flex items-baseline justify-between select-text">
+                  <h3 className="text-2xl font-black italic uppercase tracking-tight text-white group-hover:text-[#6366f1] transition-colors">
+                    Blueberry
+                  </h3>
+                  <span className="text-[10px] font-mono text-gray-500 uppercase">Mountain Nectars</span>
+                </div>
+                
+                <p className="text-sm text-gray-450 leading-relaxed font-sans font-light select-text">
+                  Smooth berry sweetness blended with refreshing soda sparkle.
+                </p>
+
+                <div className="pt-3 border-t border-gray-900/60 flex items-center justify-between">
+                  <span className="text-xxs font-mono uppercase tracking-widest text-gray-500 group-hover:text-white transition-colors">
+                    View Specs & Nutrition →
+                  </span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onNavigate('products?id=blueberry');
+                    }}
+                    className="px-4 py-2 border border-gray-800 hover:bg-[#6366f1] hover:text-black hover:border-transparent text-white font-bold text-[9px] uppercase tracking-widest rounded transition-all cursor-pointer"
+                  >
+                    View Details
+                  </button>
+                </div>
+              </div>
+            </div>
+
           </div>
 
-          {/* Flavor Card: Blueberry */}
-          <div 
-            onClick={() => onNavigate('products?id=blueberry')}
-            className="group cursor-pointer text-left flex flex-col justify-between py-2"
-          >
-            <div>
-              <div className="h-1 w-full bg-[#2DD4FF] mb-4 group-hover:h-3 transition-all duration-300"></div>
-              <h4 className="text-xl font-black uppercase italic tracking-tight group-hover:text-[#2DD4FF] transition-colors">Blueberry</h4>
-              <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-black/40 mt-1">Bold & Tart</p>
+          {/* Quick Wholesale Promo footer inside section */}
+          <div className="mt-16 bg-gradient-to-r from-gray-950 via-[#070e17] to-gray-950 border border-gray-900 rounded-3xl p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center space-x-4">
+              <span className="w-3 h-3 rounded-full bg-[#46f08a] animate-pulse" />
+              <div className="text-left select-text">
+                <p className="text-sm font-extrabold text-white uppercase tracking-wider font-mono">Bannu Manufacturing Plant Operating At High-Capacity</p>
+                <p className="text-xs text-gray-500">Secure distribution slots for Sindh, Punjab & KPK territories today.</p>
+              </div>
             </div>
-            <span className="text-xxs font-mono text-black/30 mt-6 block group-hover:text-black/60 transition-colors uppercase tracking-widest">Explore Flavor →</span>
+            <button
+              onClick={() => onNavigate('distributor')}
+              className="px-6 py-3 bg-[#46f08a] hover:bg-[#2dd4ff] text-black font-extrabold text-xs uppercase tracking-widest rounded-lg transition-all cursor-pointer shadow-lg hover:shadow-cyan-500/10"
+            >
+              Wholesale Registration
+            </button>
           </div>
 
-          {/* Flavor Card: Imli */}
-          <div 
-            onClick={() => onNavigate('products?id=imli')}
-            className="group cursor-pointer text-left flex flex-col justify-between py-2"
-          >
-            <div>
-              <div className="h-1 w-full bg-[#8D6E63] mb-4 group-hover:h-3 transition-all duration-300"></div>
-              <h4 className="text-xl font-black uppercase italic tracking-tight group-hover:text-[#8D6E63] transition-colors">Imli Royal</h4>
-              <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-black/40 mt-1">Earthy & Exotic</p>
-            </div>
-            <span className="text-xxs font-mono text-black/30 mt-6 block group-hover:text-black/60 transition-colors uppercase tracking-widest">Explore Flavor →</span>
-          </div>
         </div>
       </section>
 

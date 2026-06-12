@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { ShieldCheck, Truck, BarChart3, MapPin, Mail, Phone, Calendar, Sparkles } from 'lucide-react';
+import { TRANSLATIONS } from '../data/translations';
 
-export const Distributor: React.FC = () => {
+interface DistributorProps {
+  language?: 'en' | 'ur';
+}
+
+export const Distributor: React.FC<DistributorProps> = ({ language = 'en' }) => {
+  const t = TRANSLATIONS[language];
+
   const [formData, setFormData] = useState({
     fullName: '',
     businessName: '',
@@ -24,59 +31,77 @@ export const Distributor: React.FC = () => {
         const decodedSubject = decodeURIComponent(subjectMatch[1]);
         setFormData(prev => ({
           ...prev,
-          message: `Interested in Partnering with MUSA. Specifically looking into details for: ${decodedSubject}.\n\nPlease supply wholesale pricing sheets.`
+          message: language === 'ur'
+            ? `موسیٰ سوڈا برانڈ پارٹنر شپ میں دلچسپی ہے۔ ذائقہ: ${decodedSubject}.\nبراہ کرم ہول سیل قیمتوں کی تفصیل فراہم کریں۔`
+            : `Interested in Partnering with MUSA. Specifically looking into details for: ${decodedSubject}.\n\nPlease supply wholesale pricing sheets.`
         }));
       }
     };
     handleQueryParams();
     window.addEventListener('hashchange', handleQueryParams);
     return () => window.removeEventListener('hashchange', handleQueryParams);
-  }, []);
+  }, [language]);
 
   const benefits = [
     {
       icon: <BarChart3 className="h-6 w-6 text-[#2dd4ff]" />,
-      title: 'Strong Profitable Margins',
-      desc: 'We support highly competitive wholesale and retail price matrixes, ensuring sustainable regional payouts.'
+      title: language === 'ur' ? 'بہترین منافع بخش مارجن' : 'Strong Profitable Margins',
+      desc: language === 'ur'
+        ? 'ہم اعلیٰ مارجن اور پائیدار ڈسٹریبیوٹر ادائیگیوں کو یقینی بناتے ہیں۔'
+        : 'We support highly competitive wholesale and retail price matrixes, ensuring sustainable regional payouts.'
     },
     {
       icon: <Truck className="h-6 w-6 text-[#46f08a]" />,
-      title: 'Supply & Transport Continuity',
-      desc: 'With active bottling lanes inside the Bannu Industrial Area, we maintain predictable shipment cycles.'
+      title: language === 'ur' ? 'مسلسل اور قابل اعتبار سپلائی' : 'Supply & Transport Continuity',
+      desc: language === 'ur'
+        ? 'بنوں انڈسٹریل ایریا میں اپنے پلانٹ کی بدولت مستحکم اور بروقت ڈلیوری۔'
+        : 'With active bottling lanes inside the Bannu Industrial Area, we maintain predictable shipment cycles.'
     },
     {
       icon: <ShieldCheck className="h-6 w-6 text-yellow-400" />,
-      title: 'Marketing & POS Collateral',
-      desc: 'Get full access to MUSA banners, flyers, high-grain branded coolers, and local promotional support.'
+      title: language === 'ur' ? 'مارکیٹنگ اور خصوصی کولرز' : 'Marketing & POS Collateral',
+      desc: language === 'ur'
+        ? 'آپ کے سٹور یا گودام کے لیے بینرز، فلائیرز اور برانڈڈ کولرز کی فراہمی۔'
+        : 'Get full access to MUSA banners, flyers, high-grain branded coolers, and local promotional support.'
     },
     {
       icon: <Sparkles className="h-6 w-6 text-purple-400" />,
-      title: 'Exclusive Territories',
-      desc: 'We map singular distributor scopes per city quadrant, protecting you against retail price under-cutting.'
+      title: language === 'ur' ? 'علاقائی تحفظ (اراضی کا حق)' : 'Exclusive Territories',
+      desc: language === 'ur'
+        ? 'ہم ہر شہر میں ایک مخصوص سپلائر متعین کر کے کم ریٹ پر فروخت کا تدارک کرتے ہیں۔'
+        : 'We map singular distributor scopes per city quadrant, protecting you against retail price under-cutting.'
     }
   ];
 
   const validate = () => {
     const tempErrors: Record<string, string> = {};
-    if (!formData.fullName.trim()) tempErrors.fullName = 'Full name is required.';
-    if (!formData.businessName.trim()) tempErrors.businessName = 'Business name is required.';
-    if (!formData.city.trim()) tempErrors.city = 'City or Area is required.';
+    if (!formData.fullName.trim()) {
+      tempErrors.fullName = language === 'ur' ? 'مکمل نام درج کرنا لازمی ہے۔' : 'Full name is required.';
+    }
+    if (!formData.businessName.trim()) {
+      tempErrors.businessName = language === 'ur' ? 'کاروبار کا نام درج کرنا لازمی ہے۔' : 'Business name is required.';
+    }
+    if (!formData.city.trim()) {
+      tempErrors.city = language === 'ur' ? 'منزل مقصود شہر کا نام لازمی ہے۔' : 'City or Area is required.';
+    }
     
     // Pakistani/General Phone format check
     const phoneClean = formData.phone.replace(/\D/g, '');
     if (!formData.phone.trim()) {
-      tempErrors.phone = 'Phone number is required.';
+      tempErrors.phone = language === 'ur' ? 'رابطہ نمبر درج کرنا لازمی ہے۔' : 'Phone number is required.';
     } else if (phoneClean.length < 10) {
-      tempErrors.phone = 'Please provide a valid active contact number.';
+      tempErrors.phone = language === 'ur' ? 'براہ کرم درست رابطہ نمبر فراہم کریں۔' : 'Please provide a valid active contact number.';
     }
 
     if (!formData.email.trim()) {
-      tempErrors.email = 'Email address is required.';
+      tempErrors.email = language === 'ur' ? 'ای میل درج کرنا لازمی ہے۔' : 'Email address is required.';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      tempErrors.email = 'Please specify a proper email format.';
+      tempErrors.email = language === 'ur' ? 'ای میل کا فارمیٹ درست نہیں ہے۔' : 'Please specify a proper email format.';
     }
 
-    if (!formData.message.trim()) tempErrors.message = 'Please provide a brief message of your intent.';
+    if (!formData.message.trim()) {
+      tempErrors.message = language === 'ur' ? 'کوئی پیغام یا تجربہ لکھنا لازمی ہے۔' : 'Please provide a brief message of your intent.';
+    }
 
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
@@ -85,7 +110,6 @@ export const Distributor: React.FC = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    // Clear error inline as they type
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -95,7 +119,6 @@ export const Distributor: React.FC = () => {
     e.preventDefault();
     if (validate()) {
       setIsSubmitting(true);
-      // Simulate slow API network request
       setTimeout(() => {
         setIsSubmitting(false);
         setSubmitted(true);
@@ -129,19 +152,21 @@ export const Distributor: React.FC = () => {
   };
 
   return (
-    <div id="distributor-view" className="bg-[#050a12] text-white min-h-screen pt-32 pb-24 font-sans">
+    <div id="distributor-view" className="bg-[#050a12] text-white min-h-screen pt-32 pb-24 font-sans text-left">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Page Header */}
         <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
           <span className="text-xs font-bold uppercase tracking-widest text-[#2dd4ff] font-mono bg-cyan-950/40 border border-cyan-800/30 px-3.5 py-1 rounded-full">
-            DISTRIBUTION PARTNERSHIPS
+            {language === 'ur' ? 'تقسیم کاروں کی شراکت داری' : 'DISTRIBUTION PARTNERSHIPS'}
           </span>
-          <h1 className="text-4xl sm:text-5xl font-black font-sans tracking-tight">
-            Become a MUSA Distributor
+          <h1 className="text-4xl sm:text-5xl font-black font-sans tracking-tight leading-tight">
+            {language === 'ur' ? 'موسیٰ سوڈا کے ڈسٹریبیوٹر بنیں' : 'Become a MUSA Distributor'}
           </h1>
-          <p className="text-gray-400 text-sm sm:text-base leading-relaxed">
-            MUSA Soda Water is scaling rapidly. Formulate steady wholesale streams, claim territory monopolies, and join forces with our Bannu-grown premium brand.
+          <p className="text-gray-400 text-sm sm:text-base leading-relaxed font-light">
+            {language === 'ur'
+              ? 'موسیٰ سوڈا واٹر پاکستان بھر میں پھیل رہا ہے۔ شہر کی سطح پر ڈسٹریبیوٹر بنیں، مارکیٹ کے ہول سیل شیٹس حاصل کریں اور پریمیم منوپلی کا حصہ بنیں۔'
+              : 'MUSA Soda Water is scaling rapidly. Formulate steady wholesale streams, claim territory monopolies, and join forces with our Bannu-grown premium brand.'}
           </p>
         </div>
 
@@ -152,13 +177,15 @@ export const Distributor: React.FC = () => {
           <div className="lg:col-span-5 space-y-10 text-left">
             <div className="space-y-4">
               <span className="text-xs font-mono text-[#46f08a] uppercase font-bold tracking-widest">
-                PARTNER INCENTIVES
+                {language === 'ur' ? 'شراکت داروں کے فوائد' : 'PARTNER INCENTIVES'}
               </span>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                Why partner with us?
+                {language === 'ur' ? 'پیشہ ورانہ شراکت داری کیوں؟' : 'Why partner with us?'}
               </h2>
               <p className="text-xs text-gray-500 leading-relaxed">
-                We design our distribution frameworks with a deep focus on wholesale economics. That means honest margins, consistent delivery times, and strict regional protections.
+                {language === 'ur'
+                  ? 'ہم کاروباری صلاحیتوں اور اقتصادیات کو سامنے رکھ کر ڈسٹری بیوشن بناتے ہیں جس میں مناسب مارجن اور مستقل وقت کی فراہمی شامل ہے۔'
+                  : 'We design our distribution frameworks with a deep focus on wholesale economics. That means honest margins, consistent delivery times, and strict regional protections.'}
               </p>
             </div>
 
@@ -186,30 +213,36 @@ export const Distributor: React.FC = () => {
                 </div>
                 
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-bold text-white">Application Received!</h3>
+                  <h3 className="text-2xl font-bold text-white">
+                    {language === 'ur' ? 'درخواست قبول ہو گئی!' : 'Application Received!'}
+                  </h3>
                   <p className="text-xs text-gray-400 font-sans max-w-md mx-auto leading-relaxed">
-                    Thank you, <span className="text-white font-semibold">{formData.fullName}</span> representing <span className="text-white font-semibold">{formData.businessName}</span>. Your inquiry for <span className="text-white font-semibold">{formData.city}</span> has been logged under ID: <span className="text-[#2dd4ff] font-mono font-bold">MUSD-{Date.now().toString().slice(-6)}</span>.
+                    {language === 'ur' ? (
+                      <span>شکریہ، <span className="text-white font-semibold">{formData.fullName}</span> (نمائندہ <span className="text-white font-semibold">{formData.businessName}</span>)۔ آپ کی درخواست برائے شہر <span className="text-white font-semibold">{formData.city}</span> موصول کر لی گئی ہے جس کا رجسٹریشن آئی ڈی یہ ہے: <span className="text-[#2dd4ff] font-mono font-bold">MUSD-{Date.now().toString().slice(-6)}</span>۔</span>
+                    ) : (
+                      <span>Thank you, <span className="text-white font-semibold">{formData.fullName}</span> representing <span className="text-white font-semibold">{formData.businessName}</span>. Your inquiry for <span className="text-white font-semibold">{formData.city}</span> has been logged under ID: <span className="text-[#2dd4ff] font-mono font-bold">MUSD-{Date.now().toString().slice(-6)}</span>.</span>
+                    )}
                   </p>
                 </div>
 
                 <div className="border-t border-gray-900 py-4 max-w-sm mx-auto text-xxs text-gray-500 font-mono space-y-1">
-                  <p>Inquiry Date: {new Date().toLocaleDateString()}</p>
-                  <p>Territory Target: {formData.city}</p>
-                  <p>Our response window: Next 24 business hours.</p>
+                  <p>{language === 'ur' ? 'تاریخِ درخواست:' : 'Inquiry Date:'} {new Date().toLocaleDateString()}</p>
+                  <p>{language === 'ur' ? 'ٹارگٹ ایریا / شہر:' : 'Territory Target:'} {formData.city}</p>
+                  <p>{language === 'ur' ? 'رابطہ وقت:' : 'Our response window:'} {language === 'ur' ? 'آئندہ 24 کاروباری گھنٹے' : 'Next 24 business hours.'}</p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row justify-center gap-4">
                   <button
                     onClick={handleFormReset}
-                    className="bg-gray-900 text-white rounded-lg px-6 py-2.5 text-xs font-semibold hover:bg-gray-800 transition shadow cursor-pointer"
+                    className="bg-gray-900 text-white rounded-lg px-6 py-2.5 text-xs font-semibold hover:bg-gray-800 transition shadow cursor-pointer text-center"
                   >
-                    Submit Another Inquiry
+                    {language === 'ur' ? 'دوسری درخواست بھیجیں' : 'Submit Another Inquiry'}
                   </button>
                   <a
                     href={`mailto:musasodawater@gmail.com?subject=Wholesale Application: ${encodeURIComponent(formData.businessName)}&body=Full Name: ${encodeURIComponent(formData.fullName)}%0ACity: ${encodeURIComponent(formData.city)}%0APhone: ${encodeURIComponent(formData.phone)}%0AMessage: ${encodeURIComponent(formData.message)}`}
                     className="bg-gradient-to-r from-[#2dd4ff] to-[#46f08a] text-[#050a12] text-xs font-bold rounded-lg px-6 py-2.5 flex items-center justify-center transition shadow-lg hover:shadow-cyan-400/15"
                   >
-                    Open Mail Fallback
+                    {language === 'ur' ? 'مستقیم میل کریں' : 'Open Mail Fallback'}
                   </a>
                 </div>
               </div>
@@ -220,20 +253,26 @@ export const Distributor: React.FC = () => {
                 className="bg-[#070e17] border border-gray-900 rounded-3xl p-6 sm:p-10 shadow-2xl text-left space-y-6 relative"
               >
                 <div className="text-left space-y-1">
-                  <h3 className="text-lg font-bold text-white">Wholesale Application</h3>
-                  <p className="text-xxs text-gray-500 font-mono uppercase">MUSA Official Intake Terminal</p>
+                  <h3 className="text-lg font-bold text-white">
+                    {language === 'ur' ? 'تھوک / تھوک خریداری فارم' : 'Wholesale Application'}
+                  </h3>
+                  <p className="text-xxs text-gray-500 font-mono uppercase">
+                    {language === 'ur' ? 'موسیٰ سوڈا آفیشل پورٹل' : 'MUSA Official Intake Terminal'}
+                  </p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   {/* Full Name */}
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold text-gray-400 font-mono uppercase tracking-wider block">Full Name *</label>
+                    <label className="text-[11px] font-bold text-gray-400 font-mono uppercase tracking-wider block">
+                      {language === 'ur' ? 'مکمل نام *' : 'Full Name *'}
+                    </label>
                     <input
                       type="text"
                       name="fullName"
                       value={formData.fullName}
                       onChange={handleInputChange}
-                      placeholder="e.g. Musa Khan"
+                      placeholder={language === 'ur' ? 'مثال: موسیٰ خان' : 'e.g. Musa Khan'}
                       className={`w-full bg-gray-950 border ${errors.fullName ? 'border-red-500' : 'border-gray-850'} rounded-lg px-4 py-3 text-xs text-white focus:outline-none focus:border-[#2dd4ff] transition-all`}
                     />
                     {errors.fullName && <p className="text-[10px] text-red-500 font-mono">{errors.fullName}</p>}
@@ -241,13 +280,15 @@ export const Distributor: React.FC = () => {
 
                   {/* Business Name */}
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold text-gray-400 font-mono uppercase tracking-wider block">Business Name *</label>
+                    <label className="text-[11px] font-bold text-gray-400 font-mono uppercase tracking-wider block">
+                      {language === 'ur' ? 'کاروبار یا کمپنی کا نام *' : 'Business Name *'}
+                    </label>
                     <input
                       type="text"
                       name="businessName"
                       value={formData.businessName}
                       onChange={handleInputChange}
-                      placeholder="e.g. Musa & Sons Distribution"
+                      placeholder={language === 'ur' ? 'مثال: موسیٰ اینڈ سنز ڈسٹری بیوشن' : 'e.g. Musa & Sons Distribution'}
                       className={`w-full bg-gray-950 border ${errors.businessName ? 'border-red-500' : 'border-gray-850'} rounded-lg px-4 py-3 text-xs text-white focus:outline-none focus:border-[#2dd4ff] transition-all`}
                     />
                     {errors.businessName && <p className="text-[10px] text-red-500 font-mono">{errors.businessName}</p>}
@@ -257,13 +298,15 @@ export const Distributor: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                   {/* City/Area */}
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold text-gray-400 font-mono uppercase tracking-wider block">City / Target Area *</label>
+                    <label className="text-[11px] font-bold text-gray-400 font-mono uppercase tracking-wider block">
+                      {language === 'ur' ? 'مطلوبہ شہر / ڈویژن *' : 'City / Target Area *'}
+                    </label>
                     <input
                       type="text"
                       name="city"
                       value={formData.city}
                       onChange={handleInputChange}
-                      placeholder="e.g. Bannu, Peshawar"
+                      placeholder={language === 'ur' ? 'مثال: بنوں، پشاور' : 'e.g. Bannu, Peshawar'}
                       className={`w-full bg-gray-950 border ${errors.city ? 'border-red-500' : 'border-gray-850'} rounded-lg px-4 py-3 text-xs text-white focus:outline-none focus:border-[#2dd4ff] transition-all`}
                     />
                     {errors.city && <p className="text-[10px] text-red-500 font-mono">{errors.city}</p>}
@@ -271,7 +314,9 @@ export const Distributor: React.FC = () => {
 
                   {/* Phone */}
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold text-gray-400 font-mono uppercase tracking-wider block">Phone Number *</label>
+                    <label className="text-[11px] font-bold text-gray-400 font-mono uppercase tracking-wider block">
+                      {language === 'ur' ? 'موبائل نمبر *' : 'Phone Number *'}
+                    </label>
                     <input
                       type="tel"
                       name="phone"
@@ -285,7 +330,9 @@ export const Distributor: React.FC = () => {
 
                   {/* Email */}
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold text-gray-400 font-mono uppercase tracking-wider block">Email Address *</label>
+                    <label className="text-[11px] font-bold text-gray-400 font-mono uppercase tracking-wider block">
+                      {language === 'ur' ? 'ای میل ایڈریس *' : 'Email Address *'}
+                    </label>
                     <input
                       type="email"
                       name="email"
@@ -300,13 +347,17 @@ export const Distributor: React.FC = () => {
 
                 {/* Message / Inquiry detail */}
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold text-gray-400 font-mono uppercase tracking-wider block">Describe Your Experience & Territories *</label>
+                  <label className="text-[11px] font-bold text-gray-400 font-mono uppercase tracking-wider block">
+                    {language === 'ur' ? 'اپنا تجربہ اور گودام گنجائش بیان کریں *' : 'Describe Your Experience & Territories *'}
+                  </label>
                   <textarea
                     name="message"
                     rows={4}
                     value={formData.message}
                     onChange={handleInputChange}
-                    placeholder="Briefly explain your active coverage, current cold storage capacity, and which MUSA flavor lineup you seek first."
+                    placeholder={language === 'ur' 
+                      ? 'اپنے گودام کا سائز، کولڈ سٹوریج اور کون سے ذائقے پہلے فروخت کرنا چاہتے ہیں اس کی تفصیل فراہم کریں۔' 
+                      : 'Briefly explain your active coverage, current cold storage capacity, and which MUSA flavor lineup you seek first.'}
                     className={`w-full bg-gray-950 border ${errors.message ? 'border-red-500' : 'border-gray-850'} rounded-lg p-4 text-xs text-white focus:outline-none focus:border-[#2dd4ff] transition-all font-sans`}
                   />
                   {errors.message && <p className="text-[10px] text-red-500 font-mono">{errors.message}</p>}
@@ -317,14 +368,14 @@ export const Distributor: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-[#2dd4ff] to-[#46f08a] text-black font-extrabold uppercase tracking-widest py-4 rounded-xl text-xs transition duration-300 transform hover:-translate-y-0.5 hover:shadow-xl hover:shadow-cyan-400/10 disabled:opacity-50 flex items-center justify-center cursor-pointer"
+                    className="w-full bg-gradient-to-r from-[#2dd4ff] to-[#46f08a] text-black font-extrabold uppercase tracking-widest py-4 rounded-xl text-xs transition duration-300 transform hover:-translate-y-0.5 hover:shadow-xl hover:shadow-cyan-400/10 disabled:opacity-50 flex items-center justify-center cursor-pointer font-sans"
                   >
                     {isSubmitting ? (
                       <span className="flex items-center space-x-2">
                         <span className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                        <span>Validating intake parameters...</span>
+                        <span>{language === 'ur' ? 'تفصیلات کی تصدیق کی جا رہی ہے...' : 'Validating intake parameters...'}</span>
                       </span>
-                    ) : 'Submit Partnership Application'}
+                    ) : (language === 'ur' ? 'ڈسٹری بیوشن کے لیے درخواست جمع کریں' : 'Submit Partnership Application')}
                   </button>
                 </div>
               </form>

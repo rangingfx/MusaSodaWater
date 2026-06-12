@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, MessageSquare, CheckCircle, Navigation, Compass } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, CheckCircle, Navigation, Compass } from 'lucide-react';
 
-export const Contact: React.FC = () => {
+interface ContactProps {
+  language?: 'en' | 'ur';
+}
+
+export const Contact: React.FC<ContactProps> = ({ language = 'en' }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,19 +19,23 @@ export const Contact: React.FC = () => {
 
   const validate = () => {
     const tempErrors: Record<string, string> = {};
-    if (!formData.name.trim()) tempErrors.name = 'Please provide your name.';
-    if (!formData.subject.trim()) tempErrors.subject = 'Subject line is required.';
+    if (!formData.name.trim()) {
+      tempErrors.name = language === 'ur' ? 'براہ کرم اپنا نام درج کریں۔' : 'Please provide your name.';
+    }
+    if (!formData.subject.trim()) {
+      tempErrors.subject = language === 'ur' ? 'موضوع لکھنا لازمی ہے۔' : 'Subject line is required.';
+    }
     
     if (!formData.email.trim()) {
-      tempErrors.email = 'Email address is required.';
+      tempErrors.email = language === 'ur' ? 'ای میل درج کرنا لازمی ہے۔' : 'Email address is required.';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      tempErrors.email = 'Invalid email structure.';
+      tempErrors.email = language === 'ur' ? 'ای میل کا فارمیٹ درست نہیں ہے۔' : 'Invalid email structure.';
     }
 
     if (!formData.message.trim()) {
-      tempErrors.message = 'Please specify your message.';
+      tempErrors.message = language === 'ur' ? 'پیغام لکھنا لازمی ہے۔' : 'Please specify your message.';
     } else if (formData.message.trim().length < 15) {
-      tempErrors.message = 'Inquiry must be at least 15 characters long.';
+      tempErrors.message = language === 'ur' ? 'پیغام کم از کم ۱۵ حروف پر مشتمل ہونا چاہئے۔' : 'Inquiry must be at least 15 characters long.';
     }
 
     setErrors(tempErrors);
@@ -77,19 +85,21 @@ export const Contact: React.FC = () => {
   };
 
   return (
-    <div id="contact-view" className="bg-[#050a12] text-white min-h-screen pt-32 pb-24 font-sans">
+    <div id="contact-view" className="bg-[#050a12] text-white min-h-screen pt-32 pb-24 font-sans text-left">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Page Header */}
         <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
           <span className="text-xs font-bold uppercase tracking-widest text-[#2dd4ff] font-mono bg-cyan-950/40 border border-cyan-800/30 px-3.5 py-1 rounded-full">
-            CONNECT WITH US
+            {language === 'ur' ? 'ہم سے رابطہ کریں' : 'CONNECT WITH US'}
           </span>
-          <h1 className="text-4xl sm:text-5xl font-black font-sans tracking-tight">
-            We are Here to Help
+          <h1 className="text-4xl sm:text-5xl font-black font-sans tracking-tight leading-tight">
+            {language === 'ur' ? 'ہم آپ کی مدد کے لیے حاضر ہیں' : 'We are Here to Help'}
           </h1>
           <p className="text-gray-400 text-sm sm:text-base leading-relaxed">
-            Reach out to our communications department in Bannu. Whether you are seeking regional prices, wholesale accounts, or local career tracks.
+            {language === 'ur'
+              ? 'ہمارے سیلز اور کمیونیکیشنز ڈیپارٹمنٹ بنوں سے رابطہ کریں۔ چاہے آپ علاقائی ریٹس جاننا چاہتے ہوں یا ہول سیل ڈسٹری بیوشن اکاؤنٹس اوپن کرنا چاہتے ہوں۔'
+              : 'Reach out to our communications department in Bannu. Whether you are seeking regional prices, wholesale accounts, or local career tracks.'}
           </p>
         </div>
 
@@ -99,13 +109,15 @@ export const Contact: React.FC = () => {
           <div className="lg:col-span-5 space-y-10 text-left">
             <div className="space-y-4">
               <span className="text-xs font-mono text-[#46f08a] uppercase font-bold tracking-widest">
-                OFFICE LOCATION & CONTACT
+                {language === 'ur' ? 'دفتر کا پتہ اور رابطہ' : 'OFFICE LOCATION & CONTACT'}
               </span>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                Headquarters
+                {language === 'ur' ? 'مرکزی ہیڈ کوارٹر' : 'Headquarters'}
               </h2>
               <p className="text-xs text-gray-400 font-sans leading-relaxed">
-                Our central production facility supports regional distribution teams 24 hours a day. Drop in or call to coordinate.
+                {language === 'ur'
+                  ? 'ہمارا جدید بوٹلنگ پلانٹ اور سپلائی نیٹ ورک ڈسٹری بیوٹرز کی سروس کے لیے متحرک ہے۔ تفصیلی گفتگو کے لیے ہم سے رابطہ کریں۔'
+                  : 'Our central production facility supports regional distribution teams 24 hours a day. Drop in or call to coordinate.'}
               </p>
             </div>
 
@@ -116,10 +128,14 @@ export const Contact: React.FC = () => {
                   <MapPin className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-white uppercase tracking-wider text-xs">MUSA Bottling Factory</h4>
+                  <h4 className="font-bold text-white uppercase tracking-wider text-xs">
+                    {language === 'ur' ? 'موسیٰ بوٹلنگ فیکٹری' : 'MUSA Bottling Factory'}
+                  </h4>
                   <p className="text-[#46f08a] text-[10px] font-mono mt-0.5">ESTATE COORDINATE PIN</p>
                   <p className="text-gray-400 text-xs mt-1 leading-relaxed">
-                    Plot #24-28, Industrial Estate Area, Bannu, KPK, Pakistan.
+                    {language === 'ur'
+                      ? 'پلاٹ نمبر ۲۴-۲۸، انڈسٹریل سٹیٹ ایریا، بنوں، خیبر پختونخوا، پاکستان۔'
+                      : 'Plot #24-28, Industrial Estate Area, Bannu, KPK, Pakistan.'}
                   </p>
                 </div>
               </div>
@@ -129,25 +145,29 @@ export const Contact: React.FC = () => {
                   <Mail className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-white uppercase tracking-wider text-xs">Email Correspondence</h4>
+                  <h4 className="font-bold text-white uppercase tracking-wider text-xs">
+                    {language === 'ur' ? 'ای میل روابط' : 'Email Correspondence'}
+                  </h4>
                   <p className="text-[10px] text-gray-500 font-mono mt-0.5">DIRECT CHANNELS</p>
                   <p className="text-gray-400 text-xs mt-1">
-                    General Intake: <a href="mailto:musasodawater@gmail.com" className="hover:text-[#2dd4ff] underline">musasodawater@gmail.com</a><br />
-                    Partnerships: <a href="mailto:musasodawater@gmail.com" className="hover:text-[#2dd4ff] underline">musasodawater@gmail.com</a>
+                    {language === 'ur' ? 'عام خط و کتابت:' : 'General Intake:'} <a href="mailto:musasodawater@gmail.com" className="hover:text-[#2dd4ff] underline">musasodawater@gmail.com</a><br />
+                    {language === 'ur' ? 'شراکت داری:' : 'Partnerships:'} <a href="mailto:musasodawater@gmail.com" className="hover:text-[#2dd4ff] underline">musasodawater@gmail.com</a>
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-4">
-                <div className="p-3 bg-gray-950 border border-gray-900 rounded-xl text-yellow-500">
+                <div className="p-3 bg-gray-950 border border-gray-900 rounded-xl text-yellow-500 font-bold">
                   <Phone className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-white uppercase tracking-wider text-xs">Phone Directories</h4>
+                  <h4 className="font-bold text-white uppercase tracking-wider text-xs">
+                    {language === 'ur' ? 'فون ڈائریکٹریز' : 'Phone Directories'}
+                  </h4>
                   <p className="text-[10px] text-gray-500 font-mono mt-0.5">HOTLINES</p>
                   <p className="text-gray-400 text-xs mt-1">
-                    Corporate Office: +92 (928) 613200<br />
-                    Wholesale Sales: +92 (300) 5712101
+                    {language === 'ur' ? 'کارپوریٹ آفس:' : 'Corporate Office:'} +92 (928) 613200<br />
+                    {language === 'ur' ? 'ہول سیل سیلز:' : 'Wholesale Sales:'} +92 (300) 5712101
                   </p>
                 </div>
               </div>
@@ -157,11 +177,16 @@ export const Contact: React.FC = () => {
                   <Clock className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-white uppercase tracking-wider text-xs">Work Hours</h4>
+                  <h4 className="font-bold text-white uppercase tracking-wider text-xs">
+                    {language === 'ur' ? 'اوقات کار' : 'Work Hours'}
+                  </h4>
                   <p className="text-[10px] text-gray-500 font-mono mt-0.5">STANDARD INTERVALS</p>
                   <p className="text-gray-400 text-xs mt-1">
-                    Monday – Saturday: 08:30 AM – 06:00 PM (GMT+5)<br />
-                    Sundays: Closed
+                    {language === 'ur'
+                      ? 'پیر سے ہفتہ: صبح ۰۸:۳۰ بجے سے شام ۰۶:۰۰ بجے تک (GMT+5)'
+                      : 'Monday – Saturday: 08:30 AM – 06:00 PM (GMT+5)'}
+                    <br />
+                    {language === 'ur' ? 'اتوار: تعطیل' : 'Sundays: Closed'}
                   </p>
                 </div>
               </div>
@@ -204,15 +229,21 @@ export const Contact: React.FC = () => {
                 </div>
                 
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-bold text-white">Inquiry Received!</h3>
+                  <h3 className="text-2xl font-bold text-white">
+                    {language === 'ur' ? 'پیغام موصول ہو گیا!' : 'Inquiry Received!'}
+                  </h3>
                   <p className="text-xs text-gray-400 font-sans max-w-sm mx-auto leading-relaxed">
-                    Thank you <span className="text-white font-semibold">{formData.name}</span>. Your message regarding <span className="text-white font-semibold">"{formData.subject}"</span> has been captured.
+                    {language === 'ur' ? (
+                      <span>شکریہ <span className="text-white font-semibold">{formData.name}</span>۔ آپ کا پیغام برائے عنوان <span className="text-white font-semibold">"{formData.subject}"</span> محفوظ کر لیا گیا ہے۔</span>
+                    ) : (
+                      <span>Thank you <span className="text-white font-semibold">{formData.name}</span>. Your message regarding <span className="text-white font-semibold">"{formData.subject}"</span> has been captured.</span>
+                    )}
                   </p>
                 </div>
 
                 <div className="border-t border-gray-900 py-4 max-w-sm mx-auto text-xxs text-gray-500 font-mono space-y-1">
-                  <p>Inquiry ID: MSG-{Date.now().toString().slice(-6)}</p>
-                  <p>Expected Response: Within one business afternoon.</p>
+                  <p>{language === 'ur' ? 'پیغام کوڈ (ID):' : 'Inquiry ID:'} MSG-{Date.now().toString().slice(-6)}</p>
+                  <p>{language === 'ur' ? 'جوابی وقفہ:' : 'Expected Response:'} {language === 'ur' ? 'آئندہ کاروباری دن' : 'Within one business afternoon.'}</p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row justify-center gap-4">
@@ -220,13 +251,13 @@ export const Contact: React.FC = () => {
                     onClick={handleReset}
                     className="bg-gray-900 hover:bg-gray-800 text-white rounded-lg px-6 py-2.5 text-xs font-semibold transition cursor-pointer"
                   >
-                    Send Another Message
+                    {language === 'ur' ? 'نیا پیغام بھیجیں' : 'Send Another Message'}
                   </button>
                   <a
                     href={`mailto:musasodawater@gmail.com?subject=${encodeURIComponent(formData.subject)}&body=Hello MUSA Team,%0A%0A${encodeURIComponent(formData.message)}%0A%0ARegards,%0A${encodeURIComponent(formData.name)}`}
                     className="bg-gradient-to-r from-[#2dd4ff] to-[#46f08a] text-[#050a12] text-xs font-bold rounded-lg px-6 py-2.5 flex items-center justify-center transition shadow-lg"
                   >
-                    Standard Mail Backup
+                    {language === 'ur' ? 'روایتی ای میل کھلیں' : 'Standard Mail Backup'}
                   </a>
                 </div>
               </div>
@@ -237,20 +268,26 @@ export const Contact: React.FC = () => {
                 className="bg-[#070e17] border border-gray-900 rounded-3xl p-6 sm:p-10 shadow-2xl text-left space-y-6"
               >
                 <div className="text-left space-y-1">
-                  <h3 className="text-lg font-bold text-white">Submit Secure Message</h3>
-                  <p className="text-xxs text-gray-500 font-mono uppercase">MUSA Direct Office Intake</p>
+                  <h3 className="text-lg font-bold text-white">
+                    {language === 'ur' ? 'پیغام ارسال کریں' : 'Submit Secure Message'}
+                  </h3>
+                  <p className="text-xxs text-gray-500 font-mono uppercase">
+                    {language === 'ur' ? 'موسیٰ سوڈا براہ راست پورٹل' : 'MUSA Direct Office Intake'}
+                  </p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   {/* Name */}
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold text-gray-400 font-mono uppercase tracking-wider block">Your Name *</label>
+                    <label className="text-[11px] font-bold text-gray-400 font-mono uppercase tracking-wider block">
+                      {language === 'ur' ? 'نام *' : 'Your Name *'}
+                    </label>
                     <input
                       type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      placeholder="e.g. Musa Khan"
+                      placeholder={language === 'ur' ? 'مثال: موسیٰ خان' : 'e.g. Musa Khan'}
                       className={`w-full bg-gray-950 border ${errors.name ? 'border-red-500' : 'border-gray-850'} rounded-lg px-4 py-3 text-xs text-white focus:outline-none focus:border-[#2dd4ff] transition-all`}
                     />
                     {errors.name && <p className="text-[10px] text-red-500 font-mono">{errors.name}</p>}
@@ -258,7 +295,9 @@ export const Contact: React.FC = () => {
 
                   {/* Email */}
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold text-gray-400 font-mono uppercase tracking-wider block">Direct Email *</label>
+                    <label className="text-[11px] font-bold text-gray-400 font-mono uppercase tracking-wider block">
+                      {language === 'ur' ? 'ای میل ایڈریس *' : 'Direct Email *'}
+                    </label>
                     <input
                       type="email"
                       name="email"
@@ -273,13 +312,15 @@ export const Contact: React.FC = () => {
 
                 {/* Subject */}
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold text-gray-400 font-mono uppercase tracking-wider block">Inquiry Subject *</label>
+                  <label className="text-[11px] font-bold text-gray-400 font-mono uppercase tracking-wider block">
+                    {language === 'ur' ? 'عنوان *' : 'Inquiry Subject *'}
+                  </label>
                   <input
                     type="text"
                     name="subject"
                     value={formData.subject}
                     onChange={handleInputChange}
-                    placeholder="e.g. Feedback about Lemon Zest fizziness"
+                    placeholder={language === 'ur' ? 'مثال: پروڈکٹ کے معیار کی رائے' : 'e.g. Feedback about Lemon Zest fizziness'}
                     className={`w-full bg-gray-950 border ${errors.subject ? 'border-red-500' : 'border-gray-850'} rounded-lg px-4 py-3 text-xs text-white focus:outline-none focus:border-[#2dd4ff] transition-all`}
                   />
                   {errors.subject && <p className="text-[10px] text-red-500 font-mono">{errors.subject}</p>}
@@ -287,13 +328,17 @@ export const Contact: React.FC = () => {
 
                 {/* Message */}
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold text-gray-400 font-mono uppercase tracking-wider block">Write Message *</label>
+                  <label className="text-[11px] font-bold text-gray-400 font-mono uppercase tracking-wider block">
+                    {language === 'ur' ? 'تفصیلی پیغام لکھیں *' : 'Write Message *'}
+                  </label>
                   <textarea
                     name="message"
                     rows={5}
                     value={formData.message}
                     onChange={handleInputChange}
-                    placeholder="Describe your request in full detail. If you are reporting a batch issue, please supply date stamp and location."
+                    placeholder={language === 'ur'
+                      ? 'اپنے سوال یا شراکت داری کی آفر تفصیلی طور پر یہاں تحریر کریں۔'
+                      : 'Describe your request in full detail. If you are reporting a batch issue, please supply date stamp and location.'}
                     className={`w-full bg-gray-950 border ${errors.message ? 'border-red-500' : 'border-gray-850'} rounded-lg p-4 text-xs text-white focus:outline-none focus:border-[#2dd4ff] transition-all font-sans`}
                   />
                   {errors.message && <p className="text-[10px] text-red-500 font-mono">{errors.message}</p>}
@@ -304,14 +349,14 @@ export const Contact: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-[#2dd4ff] to-[#46f08a] text-black font-extrabold uppercase tracking-widest py-4 rounded-xl text-xs transition duration-300 transform hover:-translate-y-0.5 hover:shadow-xl disabled:opacity-50 flex items-center justify-center cursor-pointer"
+                    className="w-full bg-gradient-to-r from-[#2dd4ff] to-[#46f08a] text-black font-extrabold uppercase tracking-widest py-4 rounded-xl text-xs transition duration-300 transform hover:-translate-y-0.5 hover:shadow-xl disabled:opacity-50 flex items-center justify-center cursor-pointer font-sans"
                   >
                     {isSubmitting ? (
                       <span className="flex items-center space-x-2">
                         <span className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                        <span>Transmission routing validation...</span>
+                        <span>{language === 'ur' ? 'پیغام نیٹ ورک پر منتقل کیا جا رہا ہے...' : 'Transmission routing validation...'}</span>
                       </span>
-                    ) : 'Transmit Secure Message'}
+                    ) : (language === 'ur' ? 'پیغام ارسال کریں' : 'Transmit Secure Message')}
                   </button>
                 </div>
               </form>

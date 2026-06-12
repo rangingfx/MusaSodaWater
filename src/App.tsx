@@ -12,6 +12,13 @@ import { Contact } from './components/Contact';
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>('');
   const [currentSlug, setCurrentSlug] = useState<string | null>(null);
+  const [language, setLanguage] = useState<'en' | 'ur'>('en');
+
+  // Sync document translation state attributes
+  useEffect(() => {
+    document.documentElement.dir = language === 'ur' ? 'rtl' : 'ltr';
+    document.documentElement.lang = language;
+  }, [language]);
 
   // Synchronize hash paths for instant deep-linking and back-button safety
   useEffect(() => {
@@ -49,31 +56,31 @@ export default function App() {
   const renderView = () => {
     // Support prefix matching for nested paths or secondary detail screens
     if (currentPath === 'products') {
-      return <Products onNavigate={handleNavigate} />;
+      return <Products onNavigate={handleNavigate} language={language} />;
     }
     if (currentPath === 'about') {
-      return <About onNavigate={handleNavigate} />;
+      return <About onNavigate={handleNavigate} language={language} />;
     }
     if (currentPath === 'gallery') {
-      return <Gallery />;
+      return <Gallery language={language} />;
     }
     if (currentPath === 'distributor') {
-      return <Distributor />;
+      return <Distributor language={language} />;
     }
     if (currentPath === 'blog') {
-      return <Blog currentSlug={currentSlug} onNavigate={handleNavigate} />;
+      return <Blog currentSlug={currentSlug} onNavigate={handleNavigate} language={language} />;
     }
     if (currentPath === 'contact') {
-      return <Contact />;
+      return <Contact language={language} />;
     }
     // Default view is the brand lobby
-    return <Home onNavigate={handleNavigate} />;
+    return <Home onNavigate={handleNavigate} language={language} />;
   };
 
   return (
     <div id="musa-soda-app" className="min-h-screen bg-[#050a12] text-white flex flex-col font-sans select-text select-none">
-      {/* 1) Dynamic Interactive Glass Header */}
-      <Header currentPath={currentPath} onNavigate={handleNavigate} />
+      {/* 1) Dynamic Interactive Glass Header with Language Switcher */}
+      <Header currentPath={currentPath} onNavigate={handleNavigate} language={language} onToggleLanguage={() => setLanguage(l => l === 'en' ? 'ur' : 'en')} />
 
       {/* 2) Main Render Space with transition hooks */}
       <main id="main-content-window" className="flex-grow animate-fade-in">
@@ -81,7 +88,7 @@ export default function App() {
       </main>
 
       {/* 3) Dynamic Corporate Footer */}
-      <Footer onNavigate={handleNavigate} />
+      <Footer onNavigate={handleNavigate} language={language} />
     </div>
   );
 }

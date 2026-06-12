@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { GalleryItem } from '../types';
-import { Maximize2, X, ChevronLeft, ChevronRight, Eye, Download, Sparkles, Award, CheckCircle, Flame, Layers } from 'lucide-react';
+import { SquareEqual, ChevronLeft, ChevronRight, Eye, X, Compass, Navigation } from 'lucide-react';
 
-export const Gallery: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'all' | 'products' | 'factory' | 'events' | 'brand-kit'>('all');
+interface GalleryProps {
+  language?: 'en' | 'ur';
+}
+
+export const Gallery: React.FC<GalleryProps> = ({ language = 'en' }) => {
+  const [activeTab, setActiveTab] = useState<'all' | 'products' | 'factory' | 'events'>('all');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [selectedLabelFlavor, setSelectedLabelFlavor] = useState<'mint' | 'lemon' | 'imli'>('mint');
 
   const galleryItems: GalleryItem[] = [
     {
@@ -73,12 +76,41 @@ export const Gallery: React.FC = () => {
     }
   ];
 
+  const getLocalizedTitle = (id: string, def: string) => {
+    if (language === 'ur') {
+      if (id === 'g1') return 'پودینہ بوٹینیکل فیذ';
+      if (id === 'g2') return 'ہائی سپیڈ بوٹلنگ اسمبلی لائن';
+      if (id === 'g3') return 'خیبر پختونخوا فوڈ ایکسپو';
+      if (id === 'g4') return 'املی شاہی اسپلش';
+      if (id === 'g5') return 'ریورس اسموسس ٹرمینل';
+      if (id === 'g6') return 'موسیٰ ڈسٹریبیوٹرز اجلاس';
+      if (id === 'g7') return 'بلیوبیری کاربونیشن ٹیسٹ';
+      if (id === 'g8') return 'معیار کی کڑی نگرانی';
+      if (id === 'g9') return 'بنوں یوتھ گالا اسپانسر شپ';
+    }
+    return def;
+  };
+
+  const getLocalizedDesc = (id: string, def: string) => {
+    if (language === 'ur') {
+      if (id === 'g1') return 'لیبارٹری ریسیپی ٹیسٹ کے دوران پودینہ کے تازہ پتوں کے ساتھ کاربونیشن کا امتزاج۔';
+      if (id === 'g2') return 'بنوں انڈسٹریل سٹیٹ میں انتہائی جدید خودکار صفائی اور لیبلنگ اسمبلی لائن۔';
+      if (id === 'g3') return 'پشاور فوڈ فیسٹیول میں موسیٰ لیموں زیسٹ کو سرکاری ڈرنک کے طور پر پیش کیا گیا۔';
+      if (id === 'g4') return 'اسٹوڈیو فوٹوگرافی کے دوران املی رائل کی دلفریب چمکدار رنگت۔';
+      if (id === 'g5') return 'پانی کی سو فیصد شفافیت اور صفائی یقینی بنانے کے لیے ہمارا فلٹریشن یونٹ۔';
+      if (id === 'g6') return 'شمالی اور جنوبی خیبر پختونخوا سے ۸۰ سے زائد ہول سیل شراکت داروں کا کوآرڈینیشن اجلاس۔';
+      if (id === 'g7') return 'اسٹوڈیو کی متحرک لائٹنگ کے نیچے گہرے جامنی رنگ کی بلیوبیری کی تیاری کے لمحات۔';
+      if (id === 'g8') return 'موسیٰ سوڈاکی ہر بوتل کو سپلائی سے پہلے کڑے معیار کے مراحل سے گزارا جاتا ہے۔';
+      if (id === 'g9') return 'بنوں میں ہونے والے یوتھ اسپورٹس میلے کے کھلاڑیوں اور تماشائیوں کو انرجی اور تازگی فراہم کرنا۔';
+    }
+    return def;
+  };
+
   const filteredItems = activeTab === 'all'
     ? galleryItems
     : galleryItems.filter(item => item.category === activeTab);
 
   const openLightbox = (itemIndex: number) => {
-    // Find absolute index of item in global schema to map Next/Prev correctly
     const globalItem = filteredItems[itemIndex];
     if (globalItem) {
       const globalIdx = galleryItems.findIndex(i => i.id === globalItem.id);
@@ -105,38 +137,47 @@ export const Gallery: React.FC = () => {
   };
 
   return (
-    <div id="gallery-view" className="bg-[#050a12] text-white min-h-screen pt-32 pb-24 font-sans">
+    <div id="gallery-view" className="bg-[#050a12] text-white min-h-screen pt-32 pb-24 font-sans text-left">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <span className="text-xs font-bold uppercase tracking-widest text-[#2dd4ff] font-mono bg-cyan-950/40 border border-cyan-800/30 px-3.5 py-1 rounded-full">
-            THE GALLERY
+            {language === 'ur' ? 'تصویری گیلری' : 'THE GALLERY'}
           </span>
-          <h1 className="text-4xl sm:text-5xl font-black font-sans tracking-tight">
-            Our Brand in Frame
+          <h1 className="text-4xl sm:text-5xl font-black font-sans tracking-tight leading-tight">
+            {language === 'ur' ? 'بصری منظر نامہ' : 'Our Brand in Frame'}
           </h1>
           <p className="text-gray-400 text-sm sm:text-base leading-relaxed">
-            Take a visual tour through our pristine facility, premium products, and community events across Pakistan. Click any image to enlarge.
+            {language === 'ur'
+              ? 'ہمارے جدید مینوفیکچرنگ پلانٹ، صحت بخش پراڈکٹس اور خیبر پختونخوا بھر میں ہونے والی تقریبات پر ایک تفصیلی بصری نظر۔ زوم کرنے کے لیے تصویر پر کلک کریں۔'
+              : 'Take a visual tour through our pristine facility, premium products, and community events across Pakistan. Click any image to enlarge.'}
           </p>
         </div>
 
         {/* Filter Tabs */}
         <div id="gallery-filters" className="flex flex-wrap items-center justify-center gap-3 mb-12">
-          {['all', 'products', 'factory', 'events'].map((tab) => {
+          {(['all', 'products', 'factory', 'events'] as const).map((tab) => {
             const isActive = activeTab === tab;
+            let tabLabel = tab;
+            if (language === 'ur') {
+              if (tab === 'all') tabLabel = 'تمام تصاویر' as any;
+              if (tab === 'products') tabLabel = 'پراڈکٹس' as any;
+              if (tab === 'factory') tabLabel = 'پلانٹ' as any;
+              if (tab === 'events') tabLabel = 'تقریبات' as any;
+            }
             return (
               <button
                 key={tab}
                 id={`filter-tab-${tab}`}
-                onClick={() => setActiveTab(tab as any)}
+                onClick={() => setActiveTab(tab)}
                 className={`px-6 py-2.5 rounded-full font-semibold text-xs uppercase tracking-widest border transition-all duration-300 cursor-pointer ${
                   isActive
                     ? 'bg-gradient-to-r from-[#2dd4ff] to-[#46f08a] text-black border-transparent shadow shadow-cyan-500/10'
                     : 'bg-gray-950 border-gray-800 text-gray-400 hover:text-white'
                 }`}
               >
-                {tab === 'all' ? 'All Images' : tab}
+                {tabLabel}
               </button>
             );
           })}
@@ -145,6 +186,12 @@ export const Gallery: React.FC = () => {
         {/* Gallery Grid */}
         <div id="gallery-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredItems.map((item, index) => {
+            let catLabel = item.category;
+            if (language === 'ur') {
+              if (item.category === 'products') catLabel = 'پراڈکٹس';
+              if (item.category === 'factory') catLabel = 'پلانٹ';
+              if (item.category === 'events') catLabel = 'تقریبات';
+            }
             return (
               <div
                 key={item.id}
@@ -163,13 +210,13 @@ export const Gallery: React.FC = () => {
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/95 via-black/45 to-transparent pt-20 p-6 flex flex-col justify-end text-left select-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="space-y-1.5">
                     <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-[#46f08a] bg-[#46f08a]/10 px-2 py-0.5 rounded border border-[#46f08a]/20 self-start">
-                      {item.category}
+                      {catLabel}
                     </span>
                     <h3 className="text-base font-bold text-white tracking-wide">
-                      {item.title}
+                      {getLocalizedTitle(item.id, item.title)}
                     </h3>
                     <p className="text-xxs text-gray-400 font-sans leading-relaxed line-clamp-2">
-                      {item.description}
+                      {getLocalizedDesc(item.id, item.description)}
                     </p>
                   </div>
                 </div>
@@ -193,7 +240,7 @@ export const Gallery: React.FC = () => {
             {/* Close Button */}
             <button
               onClick={closeLightbox}
-              className="absolute top-6 right-6 p-2 rounded-full bg-gray-900 border border-gray-800 text-gray-400 hover:text-white hover:bg-gray-800 transition"
+              className="absolute top-6 right-6 p-2 rounded-full bg-gray-900 border border-gray-800 text-gray-400 hover:text-white hover:bg-gray-800 transition cursor-pointer"
               aria-label="Close Lightbox"
             >
               <X className="h-6 w-6" />
@@ -202,7 +249,7 @@ export const Gallery: React.FC = () => {
             {/* Navigation Left */}
             <button
               onClick={showPrev}
-              className="absolute left-4 sm:left-6 p-3 rounded-full bg-gray-900 border border-gray-800 text-gray-400 hover:text-white hover:bg-gray-800 transition"
+              className="absolute left-4 sm:left-6 p-3 rounded-full bg-gray-900 border border-gray-800 text-gray-400 hover:text-white hover:bg-gray-800 transition cursor-pointer"
               aria-label="Previous image"
             >
               <ChevronLeft className="h-6 w-6" />
@@ -225,16 +272,23 @@ export const Gallery: React.FC = () => {
               {/* Caption details below photo */}
               <div className="text-center space-y-1 max-w-xl">
                 <span className="text-[10px] font-mono tracking-widest text-[#46f08a] uppercase font-bold">
-                  {galleryItems[lightboxIndex].category}
+                  {language === 'ur' && galleryItems[lightboxIndex].category === 'products' ? 'پراڈکٹس' :
+                   language === 'ur' && galleryItems[lightboxIndex].category === 'factory' ? 'پلانٹ' :
+                   language === 'ur' && galleryItems[lightboxIndex].category === 'events' ? 'تقریبات' :
+                   galleryItems[lightboxIndex].category}
                 </span>
                 <h3 className="text-lg font-bold text-white font-sans">
-                  {galleryItems[lightboxIndex].title}
+                  {getLocalizedTitle(galleryItems[lightboxIndex].id, galleryItems[lightboxIndex].title)}
                 </h3>
                 <p className="text-xs text-gray-400 leading-relaxed font-sans">
-                  {galleryItems[lightboxIndex].description}
+                  {getLocalizedDesc(galleryItems[lightboxIndex].id, galleryItems[lightboxIndex].description)}
                 </p>
                 <p className="text-[10px] text-gray-500 font-mono mt-2">
-                  Image {lightboxIndex + 1} of {galleryItems.length}
+                  {language === 'ur' ? (
+                    <span>تصویر {lightboxIndex + 1} کل {galleryItems.length} میں سے</span>
+                  ) : (
+                    <span>Image {lightboxIndex + 1} of {galleryItems.length}</span>
+                  )}
                 </p>
               </div>
             </div>
@@ -242,7 +296,7 @@ export const Gallery: React.FC = () => {
             {/* Navigation Right */}
             <button
               onClick={showNext}
-              className="absolute right-4 sm:right-6 p-3 rounded-full bg-gray-900 border border-gray-800 text-gray-400 hover:text-white hover:bg-gray-800 transition"
+              className="absolute right-4 sm:right-6 p-3 rounded-full bg-gray-900 border border-gray-800 text-gray-400 hover:text-white hover:bg-gray-800 transition cursor-pointer"
               aria-label="Next image"
             >
               <ChevronRight className="h-6 w-6" />

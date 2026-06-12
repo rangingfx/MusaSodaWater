@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { BLOG_POSTS } from '../data/blog';
 import { BlogPost } from '../types';
-import { ArrowLeft, Calendar, Clock, Tag, ChevronRight, Share2, Facebook, Twitter, Link } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, Tag, ChevronRight, Link } from 'lucide-react';
 
 interface BlogProps {
   currentSlug: string | null;
   onNavigate: (path: string) => void;
+  language?: 'en' | 'ur';
 }
 
-export const Blog: React.FC<BlogProps> = ({ currentSlug, onNavigate }) => {
+export const Blog: React.FC<BlogProps> = ({ currentSlug, onNavigate, language = 'en' }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [copied, setCopied] = useState(false);
 
@@ -52,12 +53,70 @@ export const Blog: React.FC<BlogProps> = ({ currentSlug, onNavigate }) => {
     setTimeout(() => setCopied(false), 3000);
   };
 
+  const getLocalizedPostTitle = (slug: string, def: string) => {
+    if (language === 'ur') {
+      if (slug === 'why-soda-water-is-the-perfect-mixer') return 'موسیٰ سوڈا بہترین مکسر کیوں ہے؟';
+      if (slug === 'how-to-serve-musa-for-maximum-refreshment') return 'مثالی ٹھنڈک: بہترین ذائقے کے لیے سوڈا پینے کا طریقہ';
+      if (slug === 'introducing-our-flavors-mint-lemon-blueberry-imli') return 'موسیٰ ذائقے: پودینہ، لیمو، بلیوبیری اور املی کی کہانی';
+    }
+    return def;
+  };
+
+  const getLocalizedPostExcerpt = (slug: string, def: string) => {
+    if (language === 'ur') {
+      if (slug === 'why-soda-water-is-the-perfect-mixer') return 'دریافت کریں کہ کس طرح مائیکرو ببلز اور گیس کا دباؤ پودینہ اور قدرتی اجزاء کے ذائقے کو نکھارتے ہیں۔';
+      if (slug === 'how-to-serve-musa-for-maximum-refreshment') return 'درجہ حرارت اور شیشے کے برتنوں کا درست استعمال جو آپ کے پینے کے تجربے کو یادگار بنا دیتا ہے۔';
+      if (slug === 'introducing-our-flavors-mint-lemon-blueberry-imli') return 'بنوں، خیبر پختونخوا کے روایتی ذائقوں کو جدید کاربونیشن کے ساتھ یکجا کرنے کی دلفریب روایتی کہانی۔';
+    }
+    return def;
+  };
+
+  const getLocalizedPostContent = (slug: string, def: string) => {
+    if (language === 'ur') {
+      if (slug === 'why-soda-water-is-the-perfect-mixer') {
+        return `
+          <p class="lead text-lg font-medium text-gray-300 mb-6">چاہے آپ بنوں کی تپتی دھوپ میں آرام کر رہے ہوں یا کسی شاندار ضیافت کی میزبانی کر رہے ہوں، آپ کے مکسر کا معیار آپ کے مشروب کا معیار طے کرتا ہے۔ یہاں وہ سائنسی معلومات پیش ہیں جو موسیٰ کاربونیشن کو بہترین ذائقہ دار بناتی ہیں۔</p>
+          <h3 class="text-xl font-semibold text-white mt-8 mb-4">۱. ہائی پریشر مائیکرو ببلز کا کردار</h3>
+          <p class="text-gray-400 mb-6 font-sans leading-relaxed">عام گیس والے مشربات بڑے اور بھاری بلبلوں پر انحصار کرتے ہیں جو جلدی ختم ہو جاتے ہیں۔ موسیٰ میں، ہمارے مینوفیکچرنگ فلٹرز گیس کو ٹھنڈے درجہ حرارت پر شامل کرتے ہیں جس سے باریک بلبلے بنتے ہیں جو زیادہ دیر قائم رہتے ہیں۔</p>
+          <blockquote class="border-l-4 border-cyan-400 pl-4 py-2 my-6 bg-cyan-950/20 text-cyan-200 italic rounded-r font-serif">
+            "باریک بلبلے زبان پر نرم احساس چھوڑتے ہیں، جو ذائقے کے خلیات کو متحرک کر کے اصل لذت اجاگر کرتے ہیں۔"
+          </blockquote>
+          <h3 class="text-xl font-semibold text-white mt-8 mb-4">۲. قدرتی تیل اور خوشبو</h3>
+          <p class="text-gray-400 mb-6 font-sans leading-relaxed">جب آپ موسیٰ سوڈے کو پودینہ، لیمو یا املی کے ساتھ مکس کرتے ہیں، تو مائیکرو بلبلے ان اجزاء کے سانس کے ذریعے دماغ تک پہنچنے والے احساس کو تیز کرتے ہیں۔ اسی لیے موسیٰ سوڈا کا ایک چھوٹا سا گھونٹ عام مشروب کو لذیذ بناتا ہے۔</p>
+        `;
+      }
+      if (slug === 'how-to-serve-musa-for-maximum-refreshment') {
+        return `
+          <p class="lead text-lg font-medium text-gray-300 mb-6">ٹھنڈک صرف پسند کا معاملہ نہیں بلکہ فزکس کا کھیل ہے۔ جب آپ موسیٰ لا جواب سوڈا پیش کرتے ہیں، تو ہلکی سی تبدیلی پینے کا لطف دوبالا کر دیتی ہے۔</p>
+          <h3 class="text-xl font-semibold text-white mt-8 mb-4">۱. بہترین درجہ حرارت (۲ سے ۴ ڈگری)</h3>
+          <p class="text-gray-400 mb-6 font-sans leading-relaxed">اگر آپ عام درجہ حرارت پر موسیٰ بوتل کھولیں گے تو گیس تیزی سے اڑ جائے گی۔ بہترین ذائقے کے لیے بوتل کھولنے سے ۱۵ منٹ قبل اسے سب زیرو فریزر میں رکھیں۔ اس سے گیس سوڈے کے اندر متوازن رہے گی۔</p>
+          <h3 class="text-xl font-semibold text-white mt-8 mb-4">۲. شیشے کے گلاس کا انتخاب</h3>
+          <p class="text-gray-400 mb-6 font-sans leading-relaxed">ہمیشہ صاف اور پری نکھارے ہوئے شیشے کے گلاس کا انتخاب کریں۔ گلاس کو تھوڑا سا ٹھنڈا پانی سے دھو لیں۔ خشک گلاس سے گیس جلدی خارج ہو جاتی ہے جبکہ ٹھنڈا صاف گلاس تازگی کو زبان پر قائم رکھتا ہے۔</p>
+        `;
+      }
+      if (slug === 'introducing-our-flavors-mint-lemon-blueberry-imli') {
+        return `
+          <p class="lead text-lg font-medium text-gray-300 mb-6 font-sans">موسیٰ کا آغاز بنوں سٹائل میں ہوا: خالص ترین معیار اور مقامی وقار کا امتزاج۔ عالمی برانڈز کا مقابلہ کرنے کے لیے ہم نے چار منفرد ذائقے تیار کیے۔</p>
+          <h3 class="text-xl font-semibold text-green-400 mt-8 mb-4">۱. منٹ اسپارکلنگ: روایتی تازگی</h3>
+          <p class="text-gray-400 mb-6 font-sans leading-relaxed">بنوں کی شدید گرمی میں منٹ سپارکلنگ سے بہتر کوئی متبادل نہیں۔ ہم نے مہینوں کی محنت سے پودینہ کے قدرتی پودوں سے اصل عرق کشید کر کے اس سوڈے میں شامل کیا جو کڑواہٹ کے بغیر لاجواب تازگی دیتا ہے۔</p>
+          <h3 class="text-xl font-semibold text-yellow-300 mt-8 mb-4">۲. لیمن زیسٹ: ترش ذائقے دار</h3>
+          <p class="text-gray-400 mb-6 font-sans leading-relaxed">لیمن سوڈا تو ہر جگہ پائے جاتے ہیں لیکن ان میں مٹھاس بہت زیادہ ہوتی ہے۔ ہمارے لیمن زیسٹ میں ترش پن اصل لیموں کے تیل کے عرق کی وجہ سے ہے، جو سڑک کنارے لیموں چسکا پینے کی یاد دلا دیتا ہے۔</p>
+          <h3 class="text-xl font-semibold text-indigo-400 mt-8 mb-4">۳. بلیوبیری اسپلش: جدید شاہکار</h3>
+          <p class="text-gray-400 mb-6 font-sans leading-relaxed">ایک شاہانہ اور پھلوں کی چاشنی کے لیے بلیوبیری اسپلش متعارف کرایا گیا۔ قیمتی بلیوبیری کے اینٹی آکسیڈنٹس اس جامنی رنگ کے شاہکار میں گیس کے دباؤ کے ساتھ مل کر شاندار مزہ دیتے ہیں۔</p>
+          <h3 class="text-xl font-semibold text-[#f97316] mt-8 mb-4">۴. املی رائل: ہمارا تہذیبی ورثہ</h3>
+          <p class="text-gray-400 mb-6 font-sans leading-relaxed">املی کروڑوں لوگوں کی پسند ہے۔ اس لیے صدیوں سے گھروں یا گلی محلوں میں بننے والی کھٹی میٹھی املی کے روایتی فارمولے کو ہم نے فلٹر کر کے بوتل میں محفوظ کیا ہے۔ یہ لاجواب اور بے مثال مقامی ڈرنک ہے۔</p>
+        `;
+      }
+    }
+    return def;
+  };
+
   // 1) Render single detailed post
   if (activeSlug) {
     const post = BLOG_POSTS.find(p => p.slug === activeSlug);
     if (post) {
       return (
-        <div id="blog-detail-viewport" className="bg-[#050a12] text-white min-h-screen pt-32 pb-24 font-sans">
+        <div id="blog-detail-viewport" className="bg-[#050a12] text-white min-h-screen pt-32 pb-24 font-sans text-left">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Back Button */}
             <button
@@ -65,16 +124,19 @@ export const Blog: React.FC<BlogProps> = ({ currentSlug, onNavigate }) => {
               className="inline-flex items-center space-x-2 text-xs font-semibold text-gray-400 hover:text-[#2dd4ff] mb-8 group cursor-pointer focus:outline-none"
             >
               <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
-              <span>Back to Journal Catalog</span>
+              <span>{language === 'ur' ? 'جرنل لسٹنگ پر واپس جائیں' : 'Back to Journal Catalog'}</span>
             </button>
 
             {/* Headline Meta Block */}
             <div className="space-y-4 text-left mb-8">
               <span className="inline-block bg-[#2dd4ff]/10 text-[#2dd4ff] border border-[#2dd4ff]/20 text-xxs font-mono font-bold px-3 py-1 rounded-full uppercase tracking-widest">
-                {post.category}
+                {language === 'ur' && post.category === 'Mixology' ? 'مکسولوجی' :
+                 language === 'ur' && post.category === 'FMCG Guide' ? 'گائیڈ' :
+                 language === 'ur' && post.category === 'Brand Story' ? 'برانڈ کہانی' :
+                 post.category}
               </span>
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-black font-sans tracking-tight leading-tight text-white">
-                {post.title}
+                {getLocalizedPostTitle(post.slug, post.title)}
               </h1>
 
               <div className="flex flex-wrap items-center gap-4 pt-2 text-xs text-gray-500 font-mono border-b border-gray-900 pb-6">
@@ -87,7 +149,9 @@ export const Blog: React.FC<BlogProps> = ({ currentSlug, onNavigate }) => {
                   {post.readTime}
                 </span>
                 <span className="text-gray-700">|</span>
-                <span className="text-gray-500">By MUSA Brewing Experts</span>
+                <span className="text-gray-500">
+                  {language === 'ur' ? 'بشکریہ موسیٰ بریونگ ماہرین' : 'By MUSA Brewing Experts'}
+                </span>
               </div>
             </div>
 
@@ -106,7 +170,7 @@ export const Blog: React.FC<BlogProps> = ({ currentSlug, onNavigate }) => {
               {/* Social Shares Left widget */}
               <div className="md:col-span-1 flex md:flex-col items-center justify-start gap-4 py-2 border-b md:border-b-0 border-gray-900 pb-4 md:pb-0">
                 <span className="text-[10px] font-mono uppercase text-gray-600 font-bold tracking-widest md:[writing-mode:vertical-lr]">
-                  Share Art
+                  {language === 'ur' ? 'اشتراک' : 'Share Art'}
                 </span>
                 <button
                   onClick={handleShareCopy}
@@ -117,7 +181,7 @@ export const Blog: React.FC<BlogProps> = ({ currentSlug, onNavigate }) => {
                 </button>
                 {copied && (
                   <span className="text-[9px] text-emerald-400 font-mono absolute md:relative -top-6 md:top-0 animate-pulse bg-gray-950 px-2 py-0.5 rounded border border-gray-900">
-                    Copied!
+                    {language === 'ur' ? 'کاپی ہوگیا!' : 'Copied!'}
                   </span>
                 )}
               </div>
@@ -126,7 +190,7 @@ export const Blog: React.FC<BlogProps> = ({ currentSlug, onNavigate }) => {
               <div className="md:col-span-11 text-left space-y-6">
                 <div
                   className="prose prose-invert max-w-none text-gray-300 leading-relaxed text-sm sm:text-base font-sans"
-                  dangerouslySetInnerHTML={{ __html: post.content }}
+                  dangerouslySetInnerHTML={{ __html: getLocalizedPostContent(post.slug, post.content) }}
                 />
 
                 {/* Article Tags */}
@@ -144,14 +208,18 @@ export const Blog: React.FC<BlogProps> = ({ currentSlug, onNavigate }) => {
             {/* Related Content quick CTA */}
             <div className="mt-16 bg-gradient-to-r from-gray-950 via-[#070e17] to-gray-950 border border-gray-900 rounded-2xl p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
               <div className="text-left space-y-1">
-                <h4 className="text-base font-bold text-white">Thirsty for pure fizzes?</h4>
-                <p className="text-xs text-gray-500">Explore the specs of Mint, Lemon, Blueberry & Imli.</p>
+                <h4 className="text-base font-bold text-white">
+                  {language === 'ur' ? 'تازہ دم اور لذیذ ذائقوں کے پیاسے ہیں؟' : 'Thirsty for pure fizzes?'}
+                </h4>
+                <p className="text-xs text-gray-500">
+                  {language === 'ur' ? 'پودینہ، لیمو، املی اور بلیوبیری کی خصوصیات دریافت کریں۔' : 'Explore the specs of Mint, Lemon, Blueberry & Imli.'}
+                </p>
               </div>
               <button
                 onClick={() => onNavigate('products')}
-                className="bg-gradient-to-r from-[#2dd4ff] to-[#46f08a] text-black text-xs font-bold px-6 py-2.5 rounded-lg hover:shadow cursor-pointer"
+                className="bg-gradient-to-r from-[#2dd4ff] to-[#46f08a] text-black text-xs font-bold px-6 py-2.5 rounded-lg hover:shadow cursor-pointer font-sans"
               >
-                Go to Flavors catalog
+                {language === 'ur' ? 'ذائقوں کی تفصیلات دیکھیں' : 'Go to Flavors catalog'}
               </button>
             </div>
 
@@ -163,19 +231,21 @@ export const Blog: React.FC<BlogProps> = ({ currentSlug, onNavigate }) => {
 
   // 2) Render Blog Listings Grid
   return (
-    <div id="blog-list-viewport" className="bg-[#050a12] text-white min-h-screen pt-32 pb-24 font-sans">
+    <div id="blog-list-viewport" className="bg-[#050a12] text-white min-h-screen pt-32 pb-24 font-sans text-left">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header section */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <span className="text-xs font-bold uppercase tracking-widest text-[#2dd4ff] font-mono bg-cyan-950/40 border border-cyan-800/30 px-3.5 py-1 rounded-full">
-            MUSA JOURNAL
+            {language === 'ur' ? 'موسیٰ جرنل' : 'MUSA JOURNAL'}
           </span>
-          <h1 className="text-4xl sm:text-5xl font-black font-sans tracking-tight">
-            Vibrant Stories & Knowledge
+          <h1 className="text-4xl sm:text-5xl font-black font-sans tracking-tight leading-tight">
+            {language === 'ur' ? 'بصیرت افروز کہانیاں اور علم' : 'Vibrant Stories & Knowledge'}
           </h1>
           <p className="text-gray-400 text-sm sm:text-base leading-relaxed">
-            Read expert analyses on mixology mechanics, beverage physics, supply territories, and upcoming flavor innovation notes from Bannu.
+            {language === 'ur'
+              ? 'بنوں سے ذائقوں کی تیاری، مکسولوجی کے میکینکس اور ڈسٹری بیوشن سپلائی چین پر ماہرین کی تحقیقی تحریریں۔'
+              : 'Read expert analyses on mixology mechanics, beverage physics, supply territories, and upcoming flavor innovation notes from Bannu.'}
           </p>
         </div>
 
@@ -183,6 +253,13 @@ export const Blog: React.FC<BlogProps> = ({ currentSlug, onNavigate }) => {
         <div id="blog-category-tabs" className="flex flex-wrap items-center justify-center gap-3 mb-12">
           {categories.map((cat) => {
             const isActive = selectedCategory === cat;
+            let catLabel = cat;
+            if (language === 'ur') {
+              if (cat === 'all') catLabel = 'تمام مضامین';
+              if (cat === 'Mixology') catLabel = 'مکسولوجی';
+              if (cat === 'FMCG Guide') catLabel = 'گائیڈز';
+              if (cat === 'Brand Story') catLabel = 'کہانی';
+            }
             return (
               <button
                 key={cat}
@@ -194,7 +271,7 @@ export const Blog: React.FC<BlogProps> = ({ currentSlug, onNavigate }) => {
                     : 'bg-gray-950 border-gray-800 text-gray-400 hover:text-white'
                 }`}
               >
-                {cat === 'all' ? 'All Articles' : cat}
+                {catLabel}
               </button>
             );
           })}
@@ -207,7 +284,7 @@ export const Blog: React.FC<BlogProps> = ({ currentSlug, onNavigate }) => {
               <article
                 key={post.slug}
                 id={`journal-row-${post.slug}`}
-                className="bg-[#070d17] border border-gray-900 rounded-2xl overflow-hidden flex flex-col justify-between hover:border-gray-850 transition duration-300 shadow-md"
+                className="bg-[#070d17] border border-gray-900 rounded-2xl overflow-hidden flex flex-col justify-between hover:border-gray-850 transition duration-300 shadow-md text-left"
               >
                 <div>
                   {/* Photo area */}
@@ -220,7 +297,10 @@ export const Blog: React.FC<BlogProps> = ({ currentSlug, onNavigate }) => {
                       onClick={() => handlePostClick(post.slug)}
                     />
                     <span className="absolute top-3 left-3 bg-gray-950/90 text-xxs font-mono text-[#2dd4ff] font-bold px-2.5 py-1 uppercase rounded border border-gray-800">
-                      {post.category}
+                      {language === 'ur' && post.category === 'Mixology' ? 'مکسولوجی' :
+                       language === 'ur' && post.category === 'FMCG Guide' ? 'گائیڈ' :
+                       language === 'ur' && post.category === 'Brand Story' ? 'کہانی' :
+                       post.category}
                     </span>
                   </div>
 
@@ -238,19 +318,19 @@ export const Blog: React.FC<BlogProps> = ({ currentSlug, onNavigate }) => {
                     </div>
 
                     <h3 className="text-lg font-bold text-white hover:text-[#2dd4ff] transition leading-tight pointer-events-auto">
-                      <button onClick={() => handlePostClick(post.slug)} className="text-left focus:outline-none cursor-pointer">
-                        {post.title}
+                      <button onClick={() => handlePostClick(post.slug)} className="text-left focus:outline-none cursor-pointer font-sans">
+                        {getLocalizedPostTitle(post.slug, post.title)}
                       </button>
                     </h3>
 
                     <p className="text-xs text-gray-400 font-sans leading-relaxed line-clamp-2">
-                      {post.excerpt}
+                      {getLocalizedPostExcerpt(post.slug, post.excerpt)}
                     </p>
                   </div>
                 </div>
 
                 {/* Foot CTA and arrow */}
-                <div className="px-6 pb-6 pt-3 border-t border-gray-950 flex items-center justify-between text-left">
+                <div className="p-6 pt-3 border-t border-gray-950 flex items-center justify-between text-left">
                   <div className="flex flex-wrap gap-1">
                     {post.tags.slice(0, 2).map((tag, idx) => (
                       <span key={idx} className="text-[9px] text-gray-500 font-mono font-medium">#{tag}</span>
@@ -259,9 +339,9 @@ export const Blog: React.FC<BlogProps> = ({ currentSlug, onNavigate }) => {
 
                   <button
                     onClick={() => handlePostClick(post.slug)}
-                    className="text-xs font-semibold text-[#2dd4ff] hover:text-[#46f08a] transition flex items-center space-x-1 cursor-pointer"
+                    className="text-xs font-semibold text-[#2dd4ff] hover:text-[#46f08a] transition flex items-center space-x-1 cursor-pointer font-sans"
                   >
-                    <span>Read Full</span>
+                    <span>{language === 'ur' ? 'مکمل مضمون' : 'Read Full'}</span>
                     <ChevronRight className="h-3.5 w-3.5" />
                   </button>
                 </div>

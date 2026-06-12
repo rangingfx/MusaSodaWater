@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { Facebook, Instagram, Youtube, Compass, ArrowUp, Send, CheckCircle } from 'lucide-react';
+import { TRANSLATIONS } from '../data/translations';
 
 interface FooterProps {
   onNavigate: (path: string) => void;
+  language?: 'en' | 'ur';
 }
 
-export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+export const Footer: React.FC<FooterProps> = ({ onNavigate, language = 'en' }) => {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+
+  const t = TRANSLATIONS[language];
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,14 +27,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   };
 
   const flavorsList = [
-    { name: 'Mint Sparkling', id: 'mint' },
-    { name: 'Lemon Zest', id: 'lemon' },
-    { name: 'Blueberry Splash', id: 'blueberry' },
-    { name: 'Imli Royal', id: 'imli' }
+    { name: language === 'ur' ? 'پودینہ اسپارکلنگ' : 'Mint Sparkling', id: 'mint' },
+    { name: language === 'ur' ? 'لیمن زیسٹ' : 'Lemon Zest', id: 'lemon' },
+    { name: language === 'ur' ? 'بلیوبیری اسپلش' : 'Blueberry Splash', id: 'blueberry' },
+    { name: language === 'ur' ? 'املی رائل' : 'Imli Royal', id: 'imli' }
   ];
 
   return (
-    <footer id="main-footer" className="bg-[#020509] border-t border-gray-900 text-gray-400 font-sans">
+    <footer id="main-footer" className="bg-[#020509] border-t border-gray-900 text-gray-400 font-sans text-left">
       {/* Top Banner Accent */}
       <div className="h-1 bg-gradient-to-r from-red-500 via-[#2dd4ff] to-[#46f08a]" />
 
@@ -47,16 +51,16 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 MUSA<span className="text-[#2dd4ff]">.</span>
               </span>
               <span className="bg-gray-900 border border-gray-800 text-[#46f08a] px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase font-mono tracking-widest leading-none">
-                Made in Bannu
+                {t.madeInBannu}
               </span>
             </button>
-            <p className="text-sm leading-relaxed text-gray-400">
-              Forging the heights of beverage sophistication in Bannu, Pakistan. We blend state-of-the-art purification with bold local and exotic fruits since 2020.
+            <p className="text-sm leading-relaxed text-gray-400 select-text">
+              {t.brandDescription}
             </p>
             {/* Social handles */}
             <div className="space-y-3">
               <span className="text-xs font-semibold text-white uppercase tracking-widest block">
-                Follow Pure Sparkle
+                {t.followPureSparkle}
               </span>
               <div className="flex items-center space-x-4">
                 <a
@@ -105,7 +109,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Navigation Column */}
           <div className="md:col-span-2 space-y-4">
             <h4 className="text-xs font-bold text-white uppercase tracking-widest">
-              Brand Directory
+              {t.brandDirectory}
             </h4>
             <ul className="space-y-2.5 text-sm">
               <li>
@@ -113,7 +117,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => { onNavigate(''); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                   className="hover:text-[#2dd4ff] transition-colors duration-200 cursor-pointer text-left focus:outline-none"
                 >
-                  Home Lobby
+                  {t.navHome}
                 </button>
               </li>
               <li>
@@ -121,7 +125,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => { onNavigate('products'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                   className="hover:text-[#2dd4ff] transition-colors duration-200 cursor-pointer text-left focus:outline-none"
                 >
-                  Products Catalog
+                  {t.navFlavors}
                 </button>
               </li>
               <li>
@@ -129,7 +133,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => { onNavigate('about'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                   className="hover:text-[#2dd4ff] transition-colors duration-200 cursor-pointer text-left focus:outline-none"
                 >
-                  Brand History & Story
+                  {t.navAbout}
                 </button>
               </li>
               <li>
@@ -137,7 +141,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => { onNavigate('gallery'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                   className="hover:text-[#2dd4ff] transition-colors duration-200 cursor-pointer text-left focus:outline-none"
                 >
-                  Gallery & Events
+                  {t.navGallery}
                 </button>
               </li>
               <li>
@@ -145,7 +149,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => { onNavigate('distributor'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                   className="hover:text-[#2dd4ff] transition-colors duration-200 cursor-pointer text-left focus:outline-none"
                 >
-                  Distribution Network
+                  {t.navDistributors}
                 </button>
               </li>
               <li>
@@ -153,7 +157,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => { onNavigate('contact'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                   className="hover:text-[#2dd4ff] transition-colors duration-200 cursor-pointer text-left focus:outline-none"
                 >
-                  Contact Office
+                  {language === 'ur' ? 'رابطہ کا صفحہ' : 'Contact Office'}
                 </button>
               </li>
             </ul>
@@ -162,7 +166,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Flavors Column */}
           <div className="md:col-span-2 space-y-4">
             <h4 className="text-xs font-bold text-white uppercase tracking-widest">
-              Signature Flavors
+              {t.signatureFlavors}
             </h4>
             <ul className="space-y-2.5 text-sm">
               {flavorsList.map((f) => (
@@ -185,15 +189,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Newsletter Column */}
           <div className="md:col-span-4 space-y-4">
             <h4 className="text-xs font-bold text-white uppercase tracking-widest">
-              Fresh Updates
+              {t.freshUpdates}
             </h4>
             <p className="text-xs text-gray-500 leading-relaxed">
-              Subscribe to receive updates about distributor expansions, new season flavors, and local events.
+              {t.newsletterPromo}
             </p>
-            <form onSubmit={handleSubscribe} className="relative group">
+            <form onSubmit={handleSubscribe} className="relative group text-left">
               <input
                 type="email"
-                placeholder="Submit your email"
+                placeholder={t.emailPlaceholder}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -208,7 +212,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </form>
             {submitted && (
               <p className="text-[10px] text-emerald-400 font-mono animate-fade-in">
-                Thank you! You have subscribed successfully.
+                {t.subscribeSuccess}
               </p>
             )}
           </div>
@@ -222,15 +226,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="flex items-center space-x-2">
             <Compass className="h-4 w-4 text-[#2dd4ff] animate-spin-slow" />
             <span className="font-mono">
-              Bannu Industrial Area, KPK, Pakistan • Since 2020
+              {t.locationFooter}
             </span>
           </div>
           <div id="copyright-block" className="flex items-center space-x-6">
-            <span>&copy; 2026 MUSA Soda Water. All Rights Reserved.</span>
+            <span>&copy; {new Date().getFullYear()} MUSA Soda Water. {t.rightsReserved}</span>
             <button
               onClick={handleScrollTop}
               className="p-2 bg-gray-950 border border-gray-900 hover:border-[#2dd4ff] text-white rounded-lg transition-all focus:outline-none focus:ring-1 focus:ring-[#2dd4ff]"
-              aria-label="Back to Top"
+              aria-label={t.backToTop}
             >
               <ArrowUp className="h-4 w-4" />
             </button>

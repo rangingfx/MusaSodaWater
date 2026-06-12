@@ -2,14 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { PRODUCTS } from '../data/products';
 import { Product } from '../types';
 import { ArrowRight, ShoppingCart, MessageSquare, Flame, CheckCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { TRANSLATIONS } from '../data/translations';
 
 interface ProductsProps {
   onNavigate: (path: string) => void;
+  language?: 'en' | 'ur';
 }
 
-export const Products: React.FC<ProductsProps> = ({ onNavigate }) => {
+export const Products: React.FC<ProductsProps> = ({ onNavigate, language = 'en' }) => {
   const [selectedFlavorId, setSelectedFlavorId] = useState<string>('mint');
   const [expandedNutritionId, setExpandedNutritionId] = useState<string | null>(null);
+
+  const t = TRANSLATIONS[language];
 
   // Parse direct hash links (e.g. products?id=lemon)
   useEffect(() => {
@@ -33,6 +37,46 @@ export const Products: React.FC<ProductsProps> = ({ onNavigate }) => {
     return () => window.removeEventListener('hashchange', handleUrlQuery);
   }, []);
 
+  const getProdName = (p: typeof PRODUCTS[0]) => {
+    if (language === 'ur') {
+      if (p.id === 'mint') return t.mintTitle;
+      if (p.id === 'lemon') return t.lemonTitle;
+      if (p.id === 'imli') return t.imliTitle;
+      if (p.id === 'blueberry') return t.blueberryTitle;
+    }
+    return p.name;
+  };
+
+  const getProdTagline = (p: typeof PRODUCTS[0]) => {
+    if (language === 'ur') {
+      if (p.id === 'mint') return 'خالص ترین پودینہ اور تیز کاربونیشن';
+      if (p.id === 'lemon') return 'تازی بھری لیموں کی زیسٹ اور فیز';
+      if (p.id === 'imli') return 'روایتی کھٹی میٹھی اور لذیذ املی';
+      if (p.id === 'blueberry') return 'جنگلی بیریوں اور ببلز کا منفرد سنگم';
+    }
+    return p.tagline;
+  };
+
+  const getProdDesc = (p: typeof PRODUCTS[0]) => {
+    if (language === 'ur') {
+      if (p.id === 'mint') return t.mintDesc;
+      if (p.id === 'lemon') return t.lemonDesc;
+      if (p.id === 'imli') return t.imliDesc;
+      if (p.id === 'blueberry') return t.blueberryDesc;
+    }
+    return p.longDescription;
+  };
+
+  const getTasteNotes = (p: typeof PRODUCTS[0]) => {
+    if (language === 'ur') {
+      if (p.id === 'mint') return ['ٹھنڈک بھرا احساس', 'خالص پودینہ کے پتے', 'اعلی کاربونیشن جو ہاضمے میں مدد دے'];
+      if (p.id === 'lemon') return ['چمکدار لیموں کا فیز', 'قدرتی وٹامن سی', 'تازگی فراہم کرنے والا ذائقہ'];
+      if (p.id === 'imli') return ['کھٹی میٹھی شاہی املی', 'بنوں کا روایتی مشروب', 'مصالحہ دار کھانے کے بعد بہترین'];
+      if (p.id === 'blueberry') return ['میٹھی اور کھٹی بیری', 'توانائی فراہم کرے', 'جدید اور اچھوتا ذائقہ'];
+    }
+    return p.tasteNotes;
+  };
+
   const activeProduct = PRODUCTS.find((p) => p.id === selectedFlavorId) || PRODUCTS[0];
 
   const handleWholesaleInquiry = (productName: string) => {
@@ -52,13 +96,13 @@ export const Products: React.FC<ProductsProps> = ({ onNavigate }) => {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4 select-text">
           <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#2dd4ff] font-mono bg-cyan-950/40 border border-cyan-800/30 px-3.5 py-1.5 rounded-full">
-            THE CATALOGUE
+            {language === 'ur' ? 'مصنوعات کی فہرست' : 'THE CATALOGUE'}
           </span>
           <h1 className="text-4xl sm:text-6xl font-black font-display uppercase italic tracking-tighter text-white">
-            Pure Craft Sparkle
+            {language === 'ur' ? 'خالص ذائقوں کا جادو' : 'Pure Craft Sparkle'}
           </h1>
           <p className="text-gray-400 text-sm sm:text-base leading-relaxed font-sans font-light">
-            Our selection honors provincial roots and modern machinery standards. Crafted using pristine water reserves and high-impact micro-bubbles for an unprecedented crisp fizz.
+            {t.naturalFlavorsDesc}
           </p>
         </div>
 
@@ -66,6 +110,9 @@ export const Products: React.FC<ProductsProps> = ({ onNavigate }) => {
         <div id="flavor-tabs" className="flex flex-wrap items-center justify-center gap-3 mb-16">
           {PRODUCTS.map((prod) => {
             const isSelected = prod.id === selectedFlavorId;
+            const tabName = language === 'ur' 
+              ? (prod.id === 'mint' ? 'پودینہ' : prod.id === 'lemon' ? 'لیمن' : prod.id === 'imli' ? 'املی' : 'بلیوبیری') 
+              : prod.name;
             return (
               <button
                 key={prod.id}
@@ -77,7 +124,7 @@ export const Products: React.FC<ProductsProps> = ({ onNavigate }) => {
                     : 'border-transparent text-white/40 hover:text-white'
                 }`}
               >
-                {prod.id}
+                {tabName}
               </button>
             );
           })}
@@ -133,8 +180,8 @@ export const Products: React.FC<ProductsProps> = ({ onNavigate }) => {
                     </div>
 
                     {/* Flavor sticker */}
-                    <div className="relative z-10 bg-black/80 backdrop-blur-xs border border-gray-800 rounded py-2 text-center text-xxs font-mono text-[#2dd4ff] uppercase tracking-widest font-extrabold shadow-md">
-                      {prod.id}
+                    <div className="relative z-10 bg-black/80 backdrop-blur-xs border border-gray-800 rounded py-1 text-center text-[10px] font-mono text-[#2dd4ff] uppercase tracking-widest font-extrabold shadow-md">
+                      {language === 'ur' ? (prod.id === 'mint' ? 'پودینہ' : prod.id === 'lemon' ? 'لیمن' : prod.id === 'imli' ? 'املی' : 'بلیوبیری') : prod.id}
                     </div>
 
                     <div className="relative z-10 text-center leading-none">
@@ -150,41 +197,53 @@ export const Products: React.FC<ProductsProps> = ({ onNavigate }) => {
                   <div className="space-y-4">
                     <div className="flex flex-wrap items-center gap-3">
                       <span className={`px-3 py-1 rounded-full text-xxs font-bold border font-mono tracking-widest uppercase ${prod.badgeColor}`}>
-                        {prod.id} flavor
+                        {language === 'ur' ? `${prod.id === 'mint' ? 'پودینہ' : prod.id === 'lemon' ? 'لیمن' : prod.id === 'imli' ? 'املی' : 'بلیوبیری'} ذائقہ` : `${prod.id} flavor`}
                       </span>
-                      <span className="text-gray-500 text-xs font-mono">Premium Carbonated Drink</span>
+                      <span className="text-gray-500 text-xs font-mono">
+                        {language === 'ur' ? 'اعلیٰ کاربونیٹڈ ڈرنک' : 'Premium Carbonated Drink'}
+                      </span>
                     </div>
 
                     <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-none font-sans">
-                      {prod.name}
+                      {getProdName(prod)}
                     </h2>
 
                     <p className="text-[#46f08a] text-sm font-semibold tracking-wider font-mono uppercase">
-                      {prod.tagline}
+                      {getProdTagline(prod)}
                     </p>
 
-                    <p className="text-gray-400 text-sm leading-relaxed">
-                      {prod.longDescription}
+                    <p className="text-gray-400 text-sm leading-relaxed select-text">
+                      {getProdDesc(prod)}
                     </p>
                   </div>
 
                   {/* Flavor Specs */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-gray-900">
                     <div className="space-y-1">
-                      <span className="text-[11px] text-gray-500 font-mono uppercase font-bold tracking-widest">Packaging Spec</span>
-                      <p className="text-sm font-semibold text-white">{prod.size}</p>
+                      <span className="text-[11px] text-gray-500 font-mono uppercase font-bold tracking-widest">
+                        {language === 'ur' ? 'پیکیجنگ کی تفصیل' : 'Packaging Spec'}
+                      </span>
+                      <p className="text-sm font-semibold text-white">
+                        {language === 'ur' ? '300 ملی لیٹر پی ای ٹی بوتل' : prod.size}
+                      </p>
                     </div>
                     <div className="space-y-1">
-                      <span className="text-[11px] text-gray-500 font-mono uppercase font-bold tracking-widest">Serving Directive</span>
-                      <p className="text-sm font-semibold text-white">{prod.bestServed}</p>
+                      <span className="text-[11px] text-gray-500 font-mono uppercase font-bold tracking-widest">
+                        {language === 'ur' ? 'بہترین استعمال' : 'Serving Directive'}
+                      </span>
+                      <p className="text-sm font-semibold text-white">
+                        {language === 'ur' ? 'برف کی طرح ٹھنڈا پیش کریں' : prod.bestServed}
+                      </p>
                     </div>
                   </div>
 
                   {/* Taste Notes List */}
                   <div className="space-y-2">
-                    <span className="text-[11px] text-gray-500 font-mono uppercase font-bold tracking-widest block">Taste Profile & Highlights</span>
+                    <span className="text-[11px] text-gray-500 font-mono uppercase font-bold tracking-widest block">
+                      {language === 'ur' ? 'ذائقہ اور اہم خصوصیات' : 'Taste Profile & Highlights'}
+                    </span>
                     <div className="flex flex-wrap gap-2">
-                      {prod.tasteNotes.map((note, idx) => (
+                      {getTasteNotes(prod).map((note, idx) => (
                         <span key={idx} className="flex items-center space-x-1.5 bg-gray-950 border border-gray-800 rounded-lg px-3 py-1.5 text-xs text-gray-300">
                           <CheckCircle className="h-3.5 w-3.5 text-[#2dd4ff]" />
                           <span>{note}</span>
@@ -201,7 +260,7 @@ export const Products: React.FC<ProductsProps> = ({ onNavigate }) => {
                       className="w-full flex items-center justify-between p-4 focus:outline-none cursor-pointer hover:bg-gray-900/40"
                     >
                       <span className="text-xs font-bold font-mono tracking-widest text-[#46f08a] uppercase">
-                        Nutritional Facts & Ingredients
+                        {language === 'ur' ? 'غذائیت کی تفصیلات اور اجزاء' : 'Nutritional Facts & Ingredients'}
                       </span>
                       {expandedNutritionId === prod.id ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                     </button>
@@ -211,28 +270,43 @@ export const Products: React.FC<ProductsProps> = ({ onNavigate }) => {
                         {/* Nutrition Grid */}
                         <div className="grid grid-cols-4 gap-2 text-center">
                           <div className="bg-gray-900 p-2.5 rounded-lg border border-gray-800/60">
-                            <p className="text-gray-500 text-[10px] uppercase font-mono mb-1">Calories</p>
+                            <p className="text-gray-500 text-[10px] uppercase font-mono mb-1">
+                              {language === 'ur' ? 'کیلوریز' : 'Calories'}
+                            </p>
                             <p className="text-sm font-bold text-white font-mono">{prod.nutrition.calories}</p>
                           </div>
                           <div className="bg-gray-900 p-2.5 rounded-lg border border-gray-800/60">
-                            <p className="text-gray-500 text-[10px] uppercase font-mono mb-1">Carbs</p>
+                            <p className="text-gray-500 text-[10px] uppercase font-mono mb-1">
+                              {language === 'ur' ? 'کاربس' : 'Carbs'}
+                            </p>
                             <p className="text-sm font-bold text-white font-mono">{prod.nutrition.carbs}</p>
                           </div>
                           <div className="bg-gray-900 p-2.5 rounded-lg border border-gray-800/60">
-                            <p className="text-gray-500 text-[10px] uppercase font-mono mb-1">Sugars</p>
+                            <p className="text-gray-500 text-[10px] uppercase font-mono mb-1">
+                              {language === 'ur' ? 'شکر' : 'Sugars'}
+                            </p>
                             <p className="text-sm font-bold text-white font-mono">{prod.nutrition.sugars}</p>
                           </div>
                           <div className="bg-gray-900 p-2.5 rounded-lg border border-gray-800/60">
-                            <p className="text-gray-500 text-[10px] uppercase font-mono mb-1">Sodium</p>
+                            <p className="text-gray-500 text-[10px] uppercase font-mono mb-1">
+                              {language === 'ur' ? 'سوڈیم' : 'Sodium'}
+                            </p>
                             <p className="text-sm font-bold text-white font-mono">{prod.nutrition.sodium}</p>
                           </div>
                         </div>
 
                         {/* Ingredients */}
                         <div className="space-y-1">
-                          <p className="text-[10px] text-gray-500 font-mono uppercase font-bold tracking-widest">Ingredients:</p>
-                          <p className="text-gray-400 font-sans leading-relaxed">
-                            {prod.ingredients.join(', ')}.
+                          <p className="text-[10px] text-gray-500 font-mono uppercase font-bold tracking-widest text-left">
+                            {language === 'ur' ? 'اجزاء:' : 'Ingredients:'}
+                          </p>
+                          <p className="text-gray-400 font-sans leading-relaxed text-left">
+                            {language === 'ur' ? (
+                              prod.id === 'mint' ? 'فلٹر شدہ الکلائن پانی، قدرتی پودینہ کے پتے کا عرق، چینی، کاربن ڈائی آکسائیڈ گیس، سائٹرک ایسڈ' :
+                              prod.id === 'lemon' ? 'فلٹر شدہ الکلائن پانی، لیموں کا خالص عرق، گنے کی کیمیکل فری شکر، کاربونیشن، سائٹرک ایسڈ' :
+                              prod.id === 'imli' ? 'فلٹر شدہ الکلائن پانی، روایتی املی کا گودا، دیسی مصالحے اور شکر، کاربونیشن' :
+                              'فلٹر شدہ الکلائن پانی، جنگلی بلیوبیری کا رس، نامیاتی گنے کی شکر، کاربن ڈائی آکسائیڈ، سائٹرک ایسڈ'
+                            ) : prod.ingredients.join(', ')}
                           </p>
                         </div>
                       </div>
@@ -247,13 +321,13 @@ export const Products: React.FC<ProductsProps> = ({ onNavigate }) => {
                       className="w-full sm:w-auto bg-white hover:bg-gradient-to-r hover:from-[#2dd4ff] hover:to-[#46f08a] text-black font-extrabold tracking-wider rounded-lg px-8 py-3.5 text-xs transition-all flex items-center justify-center cursor-pointer"
                     >
                       <MessageSquare className="mr-2 h-4 w-4" />
-                      Order / Wholesale Inquiry
+                      {language === 'ur' ? 'آرڈر / ہول سیل معلومات' : 'Order / Wholesale Inquiry'}
                     </button>
                     <button
                       onClick={() => onNavigate('contact')}
                       className="w-full sm:w-auto border border-gray-800 hover:border-gray-600 rounded-lg px-8 py-3.5 text-xs font-semibold text-gray-300 hover:text-white transition-all cursor-pointer"
                     >
-                      Find Local Retailer
+                      {language === 'ur' ? 'قریبی دکاندار تلاش کریں' : 'Find Local Retailer'}
                     </button>
                   </div>
 
