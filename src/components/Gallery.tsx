@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { GalleryItem } from '../types';
-import { Maximize2, X, ChevronLeft, ChevronRight, Eye } from 'lucide-react';
+import { Maximize2, X, ChevronLeft, ChevronRight, Eye, Download, Sparkles, Award, CheckCircle, Flame, Layers } from 'lucide-react';
 
 export const Gallery: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'all' | 'products' | 'factory' | 'events'>('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'products' | 'factory' | 'events' | 'brand-kit'>('all');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [selectedLabelFlavor, setSelectedLabelFlavor] = useState<'mint' | 'lemon' | 'imli'>('mint');
 
   const galleryItems: GalleryItem[] = [
     {
@@ -148,7 +149,7 @@ export const Gallery: React.FC = () => {
               <div
                 key={item.id}
                 id={`gallery-card-${item.id}`}
-                className="group relative bg-[#070e17] border border-gray-905 overflow-hidden rounded-2xl aspect-square shadow-xl cursor-pointer"
+                className="group relative bg-[#070e17] border border-gray-900 overflow-hidden rounded-2xl aspect-square shadow-xl cursor-pointer"
                 onClick={() => openLightbox(index)}
               >
                 <img
@@ -186,7 +187,7 @@ export const Gallery: React.FC = () => {
         {lightboxIndex !== null && (
           <div
             id="gallery-lightbox"
-            className="fixed inset-0 bg-black/95 z-55 flex items-center justify-center p-4 backdrop-blur-md"
+            className="fixed inset-0 bg-black/95 z-[100] flex items-center justify-center p-4 backdrop-blur-md"
             onClick={closeLightbox}
           >
             {/* Close Button */}
