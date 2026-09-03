@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ShieldCheck, Truck, BarChart3, MapPin, Mail, Phone, Calendar, Sparkles } from 'lucide-react';
 import { TRANSLATIONS } from '../data/translations';
+import { WhatsAppLogo } from './WhatsAppLogo';
 
 interface DistributorProps {
   language?: 'en' | 'ur';
@@ -231,16 +232,26 @@ export const Distributor: React.FC<DistributorProps> = ({ language = 'en' }) => 
                   <p>{language === 'ur' ? 'رابطہ وقت:' : 'Our response window:'} {language === 'ur' ? 'آئندہ 24 کاروباری گھنٹے' : 'Next 24 business hours.'}</p>
                 </div>
 
-                <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <div className="flex flex-col sm:flex-row justify-center gap-3">
                   <button
                     onClick={handleFormReset}
-                    className="bg-gray-900 text-white rounded-lg px-6 py-2.5 text-xs font-semibold hover:bg-gray-800 transition shadow cursor-pointer text-center"
+                    className="bg-gray-900 text-white rounded-lg px-5 py-2.5 text-xs font-semibold hover:bg-gray-800 transition shadow cursor-pointer text-center"
                   >
                     {language === 'ur' ? 'دوسری درخواست بھیجیں' : 'Submit Another Inquiry'}
                   </button>
                   <a
+                    id="distributor-whatsapp-inquiry"
+                    href={`https://wa.me/923349029499?text=${encodeURIComponent(`Assalam o Alaikum MUSA Soda Water Team, I applied for Wholesale Distribution for ${formData.businessName} (${formData.fullName}, ${formData.city}). Looking forward to discussing details!`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold rounded-lg px-5 py-2.5 flex items-center justify-center gap-2 transition shadow-lg"
+                  >
+                    <WhatsAppLogo className="w-4 h-4" />
+                    <span>{language === 'ur' ? 'واٹس ایپ پر رابطہ کریں' : 'Chat on WhatsApp'}</span>
+                  </a>
+                  <a
                     href={`mailto:musasodawater@gmail.com?subject=Wholesale Application: ${encodeURIComponent(formData.businessName)}&body=Full Name: ${encodeURIComponent(formData.fullName)}%0ACity: ${encodeURIComponent(formData.city)}%0APhone: ${encodeURIComponent(formData.phone)}%0AMessage: ${encodeURIComponent(formData.message)}`}
-                    className="bg-gradient-to-r from-[#2dd4ff] to-[#46f08a] text-[#050a12] text-xs font-bold rounded-lg px-6 py-2.5 flex items-center justify-center transition shadow-lg hover:shadow-cyan-400/15"
+                    className="bg-gradient-to-r from-[#2dd4ff] to-[#46f08a] text-[#050a12] text-xs font-bold rounded-lg px-5 py-2.5 flex items-center justify-center transition shadow-lg hover:shadow-cyan-400/15"
                   >
                     {language === 'ur' ? 'مستقیم میل کریں' : 'Open Mail Fallback'}
                   </a>
@@ -364,7 +375,7 @@ export const Distributor: React.FC<DistributorProps> = ({ language = 'en' }) => 
                 </div>
 
                 {/* Submit button */}
-                <div className="pt-2">
+                <div className="pt-2 space-y-3">
                   <button
                     type="submit"
                     disabled={isSubmitting}
@@ -377,6 +388,20 @@ export const Distributor: React.FC<DistributorProps> = ({ language = 'en' }) => 
                       </span>
                     ) : (language === 'ur' ? 'ڈسٹری بیوشن کے لیے درخواست جمع کریں' : 'Submit Partnership Application')}
                   </button>
+
+                  <div className="flex items-center justify-center gap-2 pt-1 text-xs text-gray-400">
+                    <span>{language === 'ur' ? 'فوری تھوک معلومات:' : 'Direct Wholesale Desk:'}</span>
+                    <a
+                      id="distributor-form-whatsapp-link"
+                      href="https://wa.me/923349029499?text=Assalam%20o%20Alaikum%2C%20I%20am%20interested%20in%20becoming%20a%20MUSA%20Soda%20Water%20Distributor."
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-[#25D366] hover:text-[#46f08a] font-bold transition-colors"
+                    >
+                      <WhatsAppLogo className="w-4 h-4" />
+                      <span>WhatsApp (+92 334 9029499)</span>
+                    </a>
+                  </div>
                 </div>
               </form>
             )}

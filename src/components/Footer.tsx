@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Facebook, Instagram, Youtube, Compass, ArrowUp, Send, CheckCircle } from 'lucide-react';
 import { TRANSLATIONS } from '../data/translations';
+import { WhatsAppLogo } from './WhatsAppLogo';
 
 interface FooterProps {
   onNavigate: (path: string) => void;
@@ -62,7 +63,17 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, language = 'en' }) =
               <span className="text-xs font-semibold text-white uppercase tracking-widest block">
                 {t.followPureSparkle}
               </span>
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-3 sm:space-x-4">
+                <a
+                  href="https://wa.me/923349029499"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="p-2.5 bg-gray-950 border border-gray-900 rounded-full hover:border-[#25D366] text-emerald-400 hover:text-[#25D366] transition-all duration-300 flex items-center justify-center group"
+                  aria-label="WhatsApp (+92 334 9029499)"
+                  title="WhatsApp: +92 334 9029499"
+                >
+                  <WhatsAppLogo className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                </a>
                 <a
                   href="https://facebook.com/musasodawater"
                   target="_blank"
@@ -100,9 +111,20 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, language = 'en' }) =
                   <Youtube className="h-4 w-4" />
                 </a>
               </div>
-              <span className="text-xs font-semibold text-gray-500 font-mono block">
-                @musasodawater
-              </span>
+              <div className="flex flex-col space-y-1 text-xs">
+                <a
+                  href="https://wa.me/923349029499"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-mono text-gray-400 hover:text-[#25D366] transition-colors flex items-center gap-1.5"
+                >
+                  <WhatsAppLogo className="w-3.5 h-3.5" />
+                  <span>WhatsApp: +92 334 9029499</span>
+                </a>
+                <span className="font-mono text-gray-500">
+                  @musasodawater
+                </span>
+              </div>
             </div>
           </div>
 
@@ -222,18 +244,32 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, language = 'en' }) =
         <hr className="border-gray-900 my-12" />
 
         {/* Bottom Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-gray-500">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6 text-xs text-gray-500 pt-2">
           <div className="flex items-center space-x-2">
             <Compass className="h-4 w-4 text-[#2dd4ff] animate-spin-slow" />
             <span className="font-mono">
               {t.locationFooter}
             </span>
           </div>
-          <div id="copyright-block" className="flex items-center space-x-6">
+          <div id="copyright-block" className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
             <span>&copy; {new Date().getFullYear()} MUSA Soda Water. {t.rightsReserved}</span>
+            <span className="text-gray-700 hidden sm:inline">•</span>
+            <a
+              id="footer-powered-by"
+              href="https://rangingfx.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-[#2dd4ff] transition-colors duration-200 flex items-center gap-1 font-medium group"
+            >
+              <span>Powered by</span>
+              <span className="text-gray-200 group-hover:text-[#46f08a] font-semibold underline underline-offset-4 decoration-cyan-500/40 group-hover:decoration-[#46f08a]">
+                RanginGfx.com
+              </span>
+            </a>
             <button
+              id="footer-back-to-top"
               onClick={handleScrollTop}
-              className="p-2 bg-gray-950 border border-gray-900 hover:border-[#2dd4ff] text-white rounded-lg transition-all focus:outline-none focus:ring-1 focus:ring-[#2dd4ff]"
+              className="p-2 bg-gray-950 border border-gray-900 hover:border-[#2dd4ff] text-white rounded-lg transition-all focus:outline-none focus:ring-1 focus:ring-[#2dd4ff] cursor-pointer ml-1"
               aria-label={t.backToTop}
             >
               <ArrowUp className="h-4 w-4" />

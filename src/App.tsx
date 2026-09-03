@@ -8,6 +8,7 @@ import { Gallery } from './components/Gallery';
 import { Distributor } from './components/Distributor';
 import { Blog } from './components/Blog';
 import { Contact } from './components/Contact';
+import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>('');
@@ -89,6 +90,9 @@ export default function App() {
 
       {/* 3) Dynamic Corporate Footer */}
       <Footer onNavigate={handleNavigate} language={language} />
+
+      {/* 4) Floating WhatsApp Quick Contact Button */}
+      <FloatingWhatsApp language={language} />
     </div>
   );
 }

@@ -186,7 +186,7 @@ export const Gallery: React.FC<GalleryProps> = ({ language = 'en' }) => {
         {/* Gallery Grid */}
         <div id="gallery-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredItems.map((item, index) => {
-            let catLabel = item.category;
+            let catLabel: string = item.category;
             if (language === 'ur') {
               if (item.category === 'products') catLabel = 'پراڈکٹس';
               if (item.category === 'factory') catLabel = 'پلانٹ';

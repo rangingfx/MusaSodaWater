@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Droplets, Sparkles, Languages } from 'lucide-react';
 import { TRANSLATIONS } from '../data/translations';
+import { WhatsAppLogo } from './WhatsAppLogo';
 
 interface HeaderProps {
   currentPath: string;
@@ -128,6 +129,20 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate, languag
               </button>
             </div>
 
+            {/* WhatsApp Quick Chat */}
+            <a
+              id="header-whatsapp-btn"
+              href="https://wa.me/923349029499"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-950/70 border border-emerald-500/40 hover:border-[#25D366] text-emerald-300 hover:text-white rounded-full text-xs font-semibold transition-all group shadow-sm"
+              title="Chat on WhatsApp: +92 334 9029499"
+            >
+              <WhatsAppLogo className="w-4 h-4 group-hover:scale-110 transition-transform" />
+              <span className="hidden xl:inline text-[11px] font-mono">+92 334 9029499</span>
+              <span className="xl:hidden text-[10px] uppercase font-bold tracking-wider">WhatsApp</span>
+            </a>
+
             <button
               id="header-cta-distributor"
               onClick={() => handleLinkClick('distributor')}
@@ -218,7 +233,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate, languag
             </div>
           </div>
 
-          <div className="pt-2">
+          <div className="pt-2 space-y-2">
             <button
               id="mobile-header-cta-distributor"
               onClick={() => handleLinkClick('distributor')}
@@ -226,6 +241,17 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate, languag
             >
               {t.becomeDistributor}
             </button>
+
+            <a
+              id="mobile-header-whatsapp"
+              href="https://wa.me/923349029499"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#25D366]/20 border border-[#25D366]/40 hover:bg-[#25D366]/30 text-emerald-300 hover:text-white font-semibold text-center rounded-xl tracking-wider text-sm transition-all shadow-sm"
+            >
+              <WhatsAppLogo className="w-5 h-5" />
+              <span>{language === 'ur' ? 'واٹس ایپ: ۹۲۳۳۴۹۰۲۹۴۹۹+' : 'WhatsApp: +92 334 9029499'}</span>
+            </a>
           </div>
         </div>
       </div>

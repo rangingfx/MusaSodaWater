@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Clock, CheckCircle, Navigation, Compass } from 'lucide-react';
+import { WhatsAppLogo } from './WhatsAppLogo';
 
 interface ContactProps {
   language?: 'en' | 'ur';
@@ -156,6 +157,32 @@ export const Contact: React.FC<ContactProps> = ({ language = 'en' }) => {
                 </div>
               </div>
 
+              {/* WhatsApp Live Support */}
+              <div className="flex items-start space-x-4">
+                <div className="p-3 bg-gray-950 border border-emerald-500/40 rounded-xl flex items-center justify-center">
+                  <WhatsAppLogo className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-white uppercase tracking-wider text-xs">
+                    {language === 'ur' ? 'واٹس ایپ ڈائریکٹ چیٹ' : 'WhatsApp Support'}
+                  </h4>
+                  <p className="text-[10px] text-[#25D366] font-mono mt-0.5">INSTANT MESSAGING</p>
+                  <p className="text-gray-300 font-mono text-xs mt-1">
+                    +92 334 9029499
+                  </p>
+                  <a
+                    id="contact-whatsapp-action-btn"
+                    href="https://wa.me/923349029499"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 mt-2 px-3 py-1.5 bg-[#25D366]/20 border border-[#25D366]/40 hover:bg-[#25D366]/30 text-emerald-300 hover:text-white rounded-lg text-xs font-semibold transition-all group cursor-pointer"
+                  >
+                    <WhatsAppLogo className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+                    <span>{language === 'ur' ? 'واٹس ایپ پر رابطہ کریں' : 'Chat on WhatsApp'}</span>
+                  </a>
+                </div>
+              </div>
+
               <div className="flex items-start space-x-4">
                 <div className="p-3 bg-gray-950 border border-gray-900 rounded-xl text-yellow-500 font-bold">
                   <Phone className="h-5 w-5" />
@@ -246,16 +273,26 @@ export const Contact: React.FC<ContactProps> = ({ language = 'en' }) => {
                   <p>{language === 'ur' ? 'جوابی وقفہ:' : 'Expected Response:'} {language === 'ur' ? 'آئندہ کاروباری دن' : 'Within one business afternoon.'}</p>
                 </div>
 
-                <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <div className="flex flex-col sm:flex-row justify-center gap-3">
                   <button
                     onClick={handleReset}
-                    className="bg-gray-900 hover:bg-gray-800 text-white rounded-lg px-6 py-2.5 text-xs font-semibold transition cursor-pointer"
+                    className="bg-gray-900 hover:bg-gray-800 text-white rounded-lg px-5 py-2.5 text-xs font-semibold transition cursor-pointer"
                   >
                     {language === 'ur' ? 'نیا پیغام بھیجیں' : 'Send Another Message'}
                   </button>
                   <a
+                    id="contact-submitted-whatsapp"
+                    href={`https://wa.me/923349029499?text=${encodeURIComponent(`Hello MUSA Soda Water, my name is ${formData.name}. Regarding: ${formData.subject}. Message: ${formData.message}`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold rounded-lg px-5 py-2.5 flex items-center justify-center gap-2 transition shadow-lg"
+                  >
+                    <WhatsAppLogo className="w-4 h-4" />
+                    <span>{language === 'ur' ? 'واٹس ایپ پر گفتگو جاری رکھیں' : 'Open WhatsApp Chat'}</span>
+                  </a>
+                  <a
                     href={`mailto:musasodawater@gmail.com?subject=${encodeURIComponent(formData.subject)}&body=Hello MUSA Team,%0A%0A${encodeURIComponent(formData.message)}%0A%0ARegards,%0A${encodeURIComponent(formData.name)}`}
-                    className="bg-gradient-to-r from-[#2dd4ff] to-[#46f08a] text-[#050a12] text-xs font-bold rounded-lg px-6 py-2.5 flex items-center justify-center transition shadow-lg"
+                    className="bg-gradient-to-r from-[#2dd4ff] to-[#46f08a] text-[#050a12] text-xs font-bold rounded-lg px-5 py-2.5 flex items-center justify-center transition shadow-lg"
                   >
                     {language === 'ur' ? 'روایتی ای میل کھلیں' : 'Standard Mail Backup'}
                   </a>
@@ -345,7 +382,7 @@ export const Contact: React.FC<ContactProps> = ({ language = 'en' }) => {
                 </div>
 
                 {/* Buttons trigger */}
-                <div className="pt-2">
+                <div className="pt-2 space-y-3">
                   <button
                     type="submit"
                     disabled={isSubmitting}
@@ -358,6 +395,20 @@ export const Contact: React.FC<ContactProps> = ({ language = 'en' }) => {
                       </span>
                     ) : (language === 'ur' ? 'پیغام ارسال کریں' : 'Transmit Secure Message')}
                   </button>
+
+                  <div className="flex items-center justify-center gap-2 pt-1 text-xs text-gray-400">
+                    <span>{language === 'ur' ? 'یا براہِ راست چیٹ کریں:' : 'Or chat directly with us:'}</span>
+                    <a
+                      id="contact-form-whatsapp-link"
+                      href="https://wa.me/923349029499"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-[#25D366] hover:text-[#46f08a] font-bold transition-colors"
+                    >
+                      <WhatsAppLogo className="w-4 h-4" />
+                      <span>WhatsApp (+92 334 9029499)</span>
+                    </a>
+                  </div>
                 </div>
               </form>
             )}
